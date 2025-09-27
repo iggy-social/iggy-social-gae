@@ -11,7 +11,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt build && nuxt prepare",
     "generate-pwa-icons": "node scripts/generate-pwa-icons.js",
-    "start": "node server.js"
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@farcaster/miniapp-sdk": "latest",
