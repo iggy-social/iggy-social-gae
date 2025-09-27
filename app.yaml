@@ -27,9 +27,9 @@ handlers:
     static_dir: .output/public/_nuxt
   
   # Serve other static assets (e.g. favicon, robots.txt, images in /public)
-  - url: /(.*)
-    static_files: .output/public/\1
-    upload: .output/public/(.*)
+  #- url: /(.*)
+  #  static_files: .output/public/\1
+  #  upload: .output/public/(.*)
 
   # Serve other routes (catch all)
   - url: /.*

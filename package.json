@@ -9,7 +9,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "nuxt build && nuxt prepare",
     "generate-pwa-icons": "node scripts/generate-pwa-icons.js",
     "start": "node server.js"
   },
