@@ -26,18 +26,11 @@ handlers:
   - url: /_nuxt
     static_dir: .output/public/_nuxt
   
-  # Serve static assets from public directory (images, CSS, etc.)
-  - url: /img
-    static_dir: .output/public/img
-  - url: /css
-    static_dir: .output/public/css
-  - url: /favicon.ico
-    static_files: .output/public/favicon.ico
-    upload: .output/public/favicon.ico
-  - url: /robots.txt
-    static_files: .output/public/robots.txt
-    upload: .output/public/robots.txt
+  # Serve other static assets (e.g. favicon, robots.txt, images in /public)
+  - url: /(.*)
+    static_files: .output/public/\1
+    upload: .output/public/(.*)
 
-  # Serve all other routes through Node.js (catch all)
+  # Serve other routes (catch all)
   - url: /.*
     script: auto
