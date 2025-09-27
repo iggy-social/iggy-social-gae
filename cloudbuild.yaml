@@ -1,12 +1,12 @@
 steps:
-  - name: 'gcr.io/cloud-builders/npm'
+  - name: 'node:22'
+    entrypoint: 'npm'
     args: ['install']
-    env:
-      - 'NODE_VERSION=22'
-  - name: 'gcr.io/cloud-builders/npm'
+
+  - name: 'node:22'
+    entrypoint: 'npm'
     args: ['run', 'build']
-    env:
-      - 'NODE_VERSION=22'
+
   - name: "gcr.io/cloud-builders/gcloud"
     args: ["app", "deploy", 'app.yaml']  # , 'cron.yaml', 'index.yaml'
     timeout: "1600s"  # Adjust the timeout as needed
