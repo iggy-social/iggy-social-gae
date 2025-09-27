@@ -1,0 +1,36 @@
+runtime: nodejs22
+
+automatic_scaling:
+  max_instances: 4
+  max_idle_instances: 4
+  target_cpu_utilization: 0.92
+  target_throughput_utilization: 0.92
+  max_concurrent_requests: 800
+
+env_variables:
+  NITRO_PORT: "8080"
+  NITRO_HOST: "0.0.0.0"
+
+handlers:
+  # PWA files
+  - url: /sw.js
+    static_files: .output/public/sw.js
+    upload: .output/public/sw.js
+
+  # PWA manifest
+  - url: /manifest.webmanifest
+    static_files: .output/public/manifest.webmanifest
+    upload: .output/public/manifest.webmanifest
+
+  # Serve Nuxt build assets directly (faster, bypasses Node)
+  - url: /_nuxt
+    static_dir: .output/public/_nuxt
+  
+  # Serve other static assets (e.g. favicon, robots.txt, images in /public)
+  - url: /(.*)
+    static_files: .output/public/\1
+    upload: .output/public/(.*)
+
+  # Serve other routes (catch all)
+  - url: /.*
+    script: auto
