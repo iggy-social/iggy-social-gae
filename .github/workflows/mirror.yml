@@ -2,7 +2,7 @@ name: Mirroring
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   to_bitbucket:
     runs-on: ubuntu-latest
