@@ -143,7 +143,7 @@ export default {
 
   computed: {
     isWalletConnecting() {
-      if (window.innerWidth < this.breakpoint) {
+      if (typeof window !== 'undefined' && window.innerWidth < this.breakpoint) {
         return false
       } else if (this.connectionStatus) {
         return this.isConnecting

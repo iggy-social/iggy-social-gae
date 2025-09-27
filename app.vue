@@ -88,7 +88,7 @@ export default {
     // set sidebar collapse
     this.lSidebar = new bootstrap.Collapse('#sidebar1', { toggle: false })
     this.rSidebar = new bootstrap.Collapse('#sidebar2', { toggle: false })
-    this.width = window.innerWidth
+    this.width = typeof window !== 'undefined' ? window.innerWidth : 1024
 
     if (this.width < this.breakpoint) {
       this.setLeftSidebar(false)
@@ -188,7 +188,7 @@ export default {
 
   methods: {
     onWidthChange() {
-      this.width = window.innerWidth
+      this.width = typeof window !== 'undefined' ? window.innerWidth : 1024
     },
 
     async fetchActivityPoints() {
