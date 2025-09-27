@@ -31,10 +31,6 @@ Go to Datastore on the Cloud Console and create the `EnvVar` kind. In the `EnvVa
 
 Also create other env vars, as listed in the `.env.example` file.
 
-## Notes
-
-- The default branch must be `master`(not `main`), so that Google Cloud Repositories (GCR) can automatically pull changes. GCR only supports pulling from the `master` branch.
-
 ## How to set up Google App Engine & Cloud Build
 
 - Create App Engine app
@@ -55,15 +51,15 @@ Also create other env vars, as listed in the `.env.example` file.
   - Go to repositories: https://console.cloud.google.com/cloud-build/repositories/2nd-gen 
   - Click on "Create host connection" and connect your GitHub (org or personal account)
   - Click on "Link repositories" and select your repo on GitHub
-- Open the Cloud Build Settings page:
-  - choose the service account **without** numbers
+- Open the Cloud Build Permissions page:
+  - choose the service account **without** numbers, and set it as **preferred service account**
   - set the status of the App Engine Admin role to Enabled 
   - set the status of the Service Account User role to Enabled
-  - also, select Service Account User as preferred service account
 - Then go to the "Triggers" page:
   - click on "Create trigger"
   - Give it a name `Commit`, select 2nd Gen and select your repo
-  - Run the trigger and check its logs
+  - In the **branch** input, make sure to select the correct branch (e.g. `^main$`)
+  - Run the trigger and check its logs in History
   - If you get an error, add the appropriate user to IAM
 - Go to Cloud Tasks:
   - Create the `default` queue
