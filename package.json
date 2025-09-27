@@ -17,6 +17,7 @@
     "@farcaster/miniapp-sdk": "latest",
     "@farcaster/miniapp-wagmi-connector": "latest",
     "@google-cloud/datastore": "^10.0.1",
+    "@google-cloud/tasks": "^6.2.0",
     "@openzeppelin/merkle-tree": "^1.0.8",
     "@popperjs/core": "^2.11.8",
     "@tanstack/vue-query": ">=5.83.0",

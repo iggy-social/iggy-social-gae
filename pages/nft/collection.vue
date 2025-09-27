@@ -1,15 +1,15 @@
 <template>
   <Head>
-    <Title>NFT Collection Details | {{ $config.public.projectMetadataTitle }}</Title>
-    <Meta property="og:title" :content="'NFT Collection Details | ' + $config.public.projectMetadataTitle" />
+    <Title>{{ metaTitle }}</Title>
+    <Meta property="og:title" :content="metaTitle" />
 
-    <Meta name="description" :content="'Check this NFT collection on ' + $config.public.projectName + '!'" />
+    <Meta name="description" :content="metaDescription" />
 
-    <Meta property="og:image" :content="$config.public.projectUrl + $config.public.previewImageNftCollection" />
-    <Meta property="og:description" :content="'Check this NFT collection on ' + $config.public.projectName + '!'" />
+    <Meta property="og:image" :content="metaImage" />
+    <Meta property="og:description" :content="metaDescription" />
 
-    <Meta name="twitter:image" :content="$config.public.projectUrl + $config.public.previewImageNftCollection" />
-    <Meta name="twitter:description" :content="'Check this NFT collection on ' + $config.public.projectName + '!'" />
+    <Meta name="twitter:image" :content="metaImage" />
+    <Meta name="twitter:description" :content="metaDescription" />
   </Head>
 
   <div class="card border">
@@ -413,6 +413,30 @@ export default {
         return true
       } else {
         return false
+      }
+    },
+
+    metaTitle() {
+      if (this.cName) {
+        return this.cName + ' | ' + this.$config.public.projectMetadataTitle
+      } else {
+        return 'NFT Collection Details | ' + this.$config.public.projectMetadataTitle
+      }
+    },
+
+    metaDescription() {
+      if (this.cDescription) {
+        return this.cDescription
+      } else {
+        return 'Check this NFT collection on ' + this.$config.public.projectName + '!'
+      }
+    },
+
+    metaImage() {
+      if (this.cImage) {
+        return this.cImage
+      } else {
+        return this.$config.public.projectUrl + this.$config.public.previewImageNftCollection
       }
     },
 

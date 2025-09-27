@@ -1,7 +1,8 @@
-# Iggy Social Frontent (Nuxt)
+# Iggy Social Frontent (Nuxt) on Google App Engine (GAE)
 
 Iggy Social starter template which uses the following stack:
 
+- Google App Engine (GAE)
 - Nuxt
 - Wagmi
 - Farcaster (optional, suitable for mini apps)
@@ -19,6 +20,55 @@ npm i
 ## Supported network
 
 Set the supported network in the wagmi.ts file in the root folder. It should be only 1 supported network.
+
+## Localhost env vars
+
+On localhost create a `.env` file by duplicating or renaming the `.env.example` file. Enter the needed variable values.
+
+## GAE env vars
+
+Go to Datastore on the Cloud Console and create the `EnvVar` kind. In the `EnvVar` kind create a new entity with key title `envkey` and text `FILE_UPLOAD_SERVICE`, and value title `envval` with the value of `server`.
+
+Also create other env vars, as listed in the `.env.example` file.
+
+## Notes
+
+- The default branch must be `master`(not `main`), so that Google Cloud Repositories (GCR) can automatically pull changes. GCR only supports pulling from the `master` branch.
+
+## How to set up Google App Engine & Cloud Build
+
+- Create App Engine app
+  - Select region (e.g. europe-west).
+  - This will also automatically create a Datastore database (it may take a few minutes).
+- Enable the following APIs:
+  - Cloud Build API
+  - Cloud Tasks API
+  - App Engine Admin API
+  - Cloud Scheduler API
+  - Secret Manager API 
+- Go to IAM:
+  - Check the `Include Google-provided role grants` checkbox
+  - Then give the `Cloud Scheduler Admin` role to:
+    - the Cloud Build service account
+    - the Default App Engine service account 
+- Connect your GitHub repo with Google Cloud Repositories:
+  - Go to repositories: https://console.cloud.google.com/cloud-build/repositories/2nd-gen 
+  - Click on "Create host connection" and connect your GitHub (org or personal account)
+  - Click on "Link repositories" and select your repo on GitHub
+- Open the Cloud Build Settings page:
+  - choose the service account **without** numbers
+  - set the status of the App Engine Admin role to Enabled 
+  - set the status of the Service Account User role to Enabled
+  - also, select Service Account User as preferred service account
+- Then go to the "Triggers" page:
+  - click on "Create trigger"
+  - Give it a name `Commit`, select 2nd Gen and select your repo
+  - Run the trigger and check its logs
+  - If you get an error, add the appropriate user to IAM
+- Go to Cloud Tasks:
+  - Create the `default` queue
+  - Make sure the region is the same as you selected for your GAE app (e.g. europe-west1)
+  - Leave everything else the default
 
 ## Farcaster Mini App setup
 

@@ -53,6 +53,19 @@ export default defineEventHandler(async (event) => {
       const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i)
       if (titleMatch) {
         metadata.title = titleMatch[1].trim()
+      } else {
+        const ogTitleMatch = html.match(
+          /<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']+)["']/i,
+        )
+        if (ogTitleMatch) {
+          metadata.title = ogTitleMatch[1].trim()
+        } else {
+          // find the first h1 in the HTML
+          const h1Match = html.match(/<h1[^>]*>([^<]+)<\/h1>/i)
+          if (h1Match) {
+            metadata.title = h1Match[1].trim()
+          }
+        }
       }
 
       // Extract description
@@ -61,6 +74,15 @@ export default defineEventHandler(async (event) => {
       )
       if (descMatch) {
         metadata.description = descMatch[1].trim()
+      } else {
+        const ogDescMatch = html.match(
+          /<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']+)["']/i,
+        )
+        if (ogDescMatch) {
+          metadata.description = ogDescMatch[1].trim()
+        } else {
+          metadata.description = null
+        }
       }
 
       // Extract og:image
@@ -69,6 +91,16 @@ export default defineEventHandler(async (event) => {
       )
       if (imageMatch) {
         metadata.image.url = imageMatch[1].trim()
+      } else {
+        // find the first image in the HTML
+        const imageRegex = /<img[^>]*src=["']([^"']+)["']/gi
+        const imageMatches = html.match(imageRegex)
+        if (imageMatches) {
+          metadata.image.url = imageMatches[0].trim()
+        } else {
+          const titleWithoutSpaces = metadata.title?.replace(/\s+/g, '+')
+          metadata.image.url = "https://placehold.co/600x400/8e85e6/FFF?text=" + titleWithoutSpaces
+        }
       }
     } catch (fetchError: any) {
       console.error("Error fetching URL:", fetchError.message)
