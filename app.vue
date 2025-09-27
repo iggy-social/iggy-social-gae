@@ -82,6 +82,19 @@ export default {
   async mounted() {
     this.isMounted = true
 
+    // Safeguard for ethereum property in PWA environments
+    if (typeof window !== 'undefined' && window.ethereum) {
+      try {
+        // Check if ethereum property is writable
+        const descriptor = Object.getOwnPropertyDescriptor(window, 'ethereum')
+        if (descriptor && !descriptor.writable) {
+          console.warn('window.ethereum is read-only, this may cause issues with wallet connectors')
+        }
+      } catch (error) {
+        console.warn('Could not check ethereum property descriptor:', error)
+      }
+    }
+
     // set color mode
     document.documentElement.setAttribute('data-bs-theme', this.colorMode)
 

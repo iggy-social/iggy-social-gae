@@ -158,6 +158,8 @@ export default defineNuxtConfig({
     workbox: {
       navigateFallback: '/',
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      skipWaiting: true,
+      clientsClaim: true,
     },
     client: {
       installPrompt: true,
