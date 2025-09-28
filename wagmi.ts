@@ -43,9 +43,11 @@ export const config = createConfig({
     injected(),
     farcasterMiniApp(),
     metaMask(),
+    /*
     walletConnect({
       projectId: import.meta.env.VITE_WC_PROJECT_ID,
     }),
+    */
   ],
   storage: createStorage({
     storage: cookieStorage,
