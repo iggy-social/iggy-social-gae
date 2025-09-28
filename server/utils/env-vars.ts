@@ -8,7 +8,7 @@ export async function getEnvVar(varkey: string) {
     // if running on Google App Engine, return the environment variable from the datastore
     const query = datastore.createQuery('EnvVar');
 
-    query.filter('varkey', varkey);
+    query.filter('envkey', varkey);
 
     const [results] = await datastore.runQuery(query);
 
@@ -20,7 +20,7 @@ export async function getEnvVar(varkey: string) {
       const result = results[0];
 
       // Get the varval value
-      const varValue = result['varval'];
+      const varValue = result['envval'];
 
       return varValue;
     }
