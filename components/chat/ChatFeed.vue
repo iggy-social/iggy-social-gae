@@ -276,13 +276,13 @@ export default {
     },
 
     tenorKey() {
-      let tenorKey = this.$config.public.tenorApiKey
+      let tKey = this.$config.public.tenorApiKey
 
-      if (!tenorKey) {
-        tenorKey = this.$envVars.TENOR_KEY
+      if (!tKey) {
+        tKey = this.$envVars.TENOR_KEY
       }
 
-      return tenorKey
+      return tKey
     },
   },
 
