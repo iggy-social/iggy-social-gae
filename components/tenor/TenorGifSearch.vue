@@ -84,8 +84,6 @@ export default {
     async findGifs() {
       this.gifArray = []
 
-      console.log('tenorKey:', this.tenorKey)
-
       const searchUrl =
         'https://tenor.googleapis.com/v2/search?q=' +
         this.searchTerm +
