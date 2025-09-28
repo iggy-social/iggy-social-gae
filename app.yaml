@@ -25,12 +25,13 @@ handlers:
   # Serve Nuxt build assets directly (faster, bypasses Node)
   - url: /_nuxt
     static_dir: .output/public/_nuxt
+    require_matching_file: true
   
   # Serve other static assets (e.g. favicon, robots.txt, images in /public)
-  #- url: /(.*)
-  #  static_files: .output/public/\1
-  #  upload: .output/public/(.*)
+  - url: /(.*\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))$
+    static_files: .output/public/\1
+    upload: .output/public/(.*)
 
-  # Serve other routes (catch all) - but exclude _nuxt
+  # Serve other routes (catch all) - but exclude _nuxt and static assets
   - url: /(?!_nuxt).*
     script: auto
