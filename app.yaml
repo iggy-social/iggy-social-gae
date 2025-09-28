@@ -31,6 +31,6 @@ handlers:
   #  static_files: .output/public/\1
   #  upload: .output/public/(.*)
 
-  # Serve other routes (catch all)
-  - url: /.*
+  # Serve other routes (catch all) - but exclude _nuxt
+  - url: /(?!_nuxt).*
     script: auto

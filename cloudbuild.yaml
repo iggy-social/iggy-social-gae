@@ -1,11 +1,19 @@
 steps:
-  - name: 'node:22'
-    entrypoint: 'npm'
-    args: ['install']
+  # 1. Install dependencies with cache
+  - name: node:22
+    entrypoint: npm
+    args: ["ci"]
+    volumes:
+      - name: npm-cache
+        path: /root/.npm
 
-  - name: 'node:22'
-    entrypoint: 'npm'
-    args: ['run', 'build']
+  # 2. Build Nuxt (generates .output/)
+  - name: node:22
+    entrypoint: npm
+    args: ["run", "build"]
+    volumes:
+      - name: npm-cache
+        path: /root/.npm
 
   - name: "gcr.io/cloud-builders/gcloud"
     args: ["app", "deploy", 'app.yaml']  # , 'cron.yaml', 'index.yaml'
