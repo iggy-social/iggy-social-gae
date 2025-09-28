@@ -33,5 +33,5 @@ handlers:
     upload: .output/public/(.*)
 
   # Serve other routes (catch all) - but exclude _nuxt and static assets
-  - url: /(?!_nuxt).*
+  - url: /.*
     script: auto
