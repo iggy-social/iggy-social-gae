@@ -63,6 +63,18 @@ export default {
     }
   },
 
+  computed: {
+    tenorKey() {
+      let tenorKey = this.$config.public.tenorApiKey
+
+      if (!tenorKey) {
+        tenorKey = this.$envVars.TENOR_KEY
+      }
+
+      return tenorKey
+    },
+  },
+
   methods: {
     chooseGif(selectedGif) {
       document.getElementById('closeGifModal').click()
@@ -76,7 +88,7 @@ export default {
         'https://tenor.googleapis.com/v2/search?q=' +
         this.searchTerm +
         '&key=' +
-        this.$config.public.tenorApiKey +
+        this.tenorKey +
         '&client_key=' +
         this.clientKey +
         '&limit=' +

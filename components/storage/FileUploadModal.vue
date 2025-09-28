@@ -52,7 +52,7 @@
                 </p>
                 <p>
                   <span class="text-danger">Please send AR tokens to this wallet (min. {{ $config.public.arweaveMinBalance }} AR) to enable uploads: </span> 
-                  <a :href="'https://arscan.io/address/' + this.$config.public.arweaveAddress" target="_blank">{{ this.$config.public.arweaveAddress }}</a>.
+                  <a :href="'https://arscan.io/address/' + arAddress" target="_blank">{{ arAddress }}</a>.
                 </p>
               </div>
 
@@ -113,6 +113,16 @@ export default {
   },
 
   computed: {
+    arAddress() {
+      let arAddress = this.$config.public.arweaveAddress
+
+      if (!arAddress) {
+        arAddress = this.$envVars.ARWEAVE_ADDRESS
+      }
+
+      return arAddress
+    },
+
     arBalance() {
       if (this.arweaveBalance) {
         const balancePrecision = Number(this.arweaveBalance).toFixed(6);

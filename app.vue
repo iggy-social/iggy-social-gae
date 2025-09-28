@@ -199,8 +199,14 @@ export default {
     },
 
     async fetchArweaveBalance() {
-      if (this.$config.public.arweaveAddress) {
-        const balance = await getArweaveBalance(this.$config.public.arweaveAddress)
+      let arAddress = this.$config.public.arweaveAddress
+
+      if (!arAddress) {
+        arAddress = this.$envVars.ARWEAVE_ADDRESS
+      }
+      
+      if (arAddress) {
+        const balance = await getArweaveBalance(arAddress)
         console.log('Arweave balance:')
         console.log(balance)
 

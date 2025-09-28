@@ -20,7 +20,7 @@
             <!-- GIF button -->
             <TenorGifSearch
               v-if="
-                $config.public.tenorApiKey != '' &&
+                tenorKey != '' &&
                 isConnected &&
                 isSupportedChain &&
                 hasDomainOrNotRequired
@@ -30,7 +30,7 @@
 
             <!-- Sticker button 
             <TenorStickerSearch 
-              v-if="$config.public.tenorApiKey != '' && isConnected && isSupportedChain && hasDomainOrNotRequired"  
+              v-if="tenorKey != '' && isConnected && isSupportedChain && hasDomainOrNotRequired"  
               @insertSticker="insertImage"
             />
             -->
@@ -273,6 +273,16 @@ export default {
       } else {
         return false
       }
+    },
+
+    tenorKey() {
+      let tenorKey = this.$config.public.tenorApiKey
+
+      if (!tenorKey) {
+        tenorKey = this.$envVars.TENOR_KEY
+      }
+
+      return tenorKey
     },
   },
 
