@@ -360,16 +360,6 @@ export default {
   },
 
   computed: {
-    cAddress() {
-      const address = this.$route.query?.id
-      
-      if (address) {
-        return address
-      }
-
-      return null
-    },
-
     collectionExplorerLink() {
       return this.$config.public.blockExplorerBaseUrl+"/token/"+this.cAddress;
     },
@@ -415,28 +405,20 @@ export default {
         return false
       }
     },
+    
+    metaDescription() {
+      return this.collectionData?.description || 'Check this NFT collection on ' + this.$config.public.projectName + '!'
+    },
+    
+    metaImage() {
+      return this.collectionData?.image || this.$config.public.projectUrl + this.$config.public.previewImageNftCollection
+    },
 
     metaTitle() {
-      if (this.cName) {
-        return this.cName + ' | ' + this.$config.public.projectMetadataTitle
+      if (this.collectionData?.name) {
+        return this.collectionData.name + ' | ' + this.$config.public.projectMetadataTitle
       } else {
         return 'NFT Collection Details | ' + this.$config.public.projectMetadataTitle
-      }
-    },
-
-    metaDescription() {
-      if (this.cDescription) {
-        return this.cDescription
-      } else {
-        return 'Check this NFT collection on ' + this.$config.public.projectName + '!'
-      }
-    },
-
-    metaImage() {
-      if (this.cImage) {
-        return this.cImage
-      } else {
-        return this.$config.public.projectUrl + this.$config.public.previewImageNftCollection
       }
     },
 
@@ -1381,9 +1363,23 @@ export default {
     const { address, chainId, isConnected } = useAccount({ config })
     const toast = useToast()
 
+    const route = useRoute()
+    const cAddress = computed(() => route.query?.id)
+
+    // Use useAsyncData for server-side data fetching
+    const { data: collectionData, pending, error } = useAsyncData('collection', async () => {
+      if (!cAddress.value) return null
+      
+      // Call your server API and extract the data
+      const response = await $fetch(`/api/nft-collection/${cAddress.value}`)
+      return response.data // Extract just the collection data
+    })
+
     return { 
       address, 
+      cAddress,
       chainId, 
+      collectionData,
       isConnected, 
       toast 
     }
