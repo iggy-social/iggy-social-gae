@@ -1,6 +1,6 @@
 import { defineEventHandler, getQuery, getRouterParam } from 'h3'
 import { isAddress } from 'viem'
-import { getIpfsUrl } from '~/utils/fileUtils'
+import { getWorkingUrl } from '~/utils/fileUtils'
 import { publicClient } from '~/server/utils/wagmi'
 
 // NFT Contract ABI
@@ -162,11 +162,17 @@ async function fetchCollectionFromBlockchain(address: string) {
         })
       ])
 
-      // Process IPFS URLs
+      // Process IPFS URLs and get working URL
       let processedImage = String(image)
-      const ipfsUrl = getIpfsUrl(String(image))
-      if (ipfsUrl) {
-        processedImage = ipfsUrl.replace('ipfs://', 'https://ipfs.io/ipfs/')
+      
+      // Get working URL to ensure it's accessible
+      try {
+        const workingUrlResult = await getWorkingUrl(processedImage)
+        if (workingUrlResult.success) {
+          processedImage = workingUrlResult.url
+        }
+      } catch (error) {
+        console.log('Could not verify image URL:', error)
       }
 
       return {
@@ -257,11 +263,16 @@ async function fetchFallbackCollection(address: string) {
       }
     }
 
-    // Process IPFS URLs
+    // Process IPFS URLs and get working URL
     if (image) {
-      const ipfsUrl = getIpfsUrl(image)
-      if (ipfsUrl) {
-        image = ipfsUrl.replace('ipfs://', 'https://ipfs.io/ipfs/')
+      // Get working URL to ensure it's accessible
+      try {
+        const workingUrlResult = await getWorkingUrl(image)
+        if (workingUrlResult.success) {
+          image = workingUrlResult.url
+        }
+      } catch (error) {
+        console.log('Could not verify image URL:', error)
       }
     }
 
