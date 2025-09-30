@@ -17,7 +17,7 @@
         action: {
           type: 'launch_miniapp',
           name: $config.public.projectName,
-          url: $config.public.projectUrl + '/profile/?id=' + this.$route.query.id,
+          url: $config.public.projectUrl + '/profile/?id=' + $route.query.id,
           splashImageUrl: $config.public.farcasterSplashImageUrl,
           splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
         }
