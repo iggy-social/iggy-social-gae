@@ -10,6 +10,8 @@
 
     <Meta name="twitter:image" :content="$config.public.projectUrl + $config.public.previewImageNftCreate" />
     <Meta name="twitter:description" :content="'Create your very own NFT collection on ' + $config.public.projectName + '!'" />
+
+    <Meta name="fc:miniapp" :content="fcMetaTag" />
   </Head>
 
   <div class="card border scroll-500">
@@ -522,13 +524,30 @@ export default {
   },
 
   setup() {
-    const config = useConfig()
-    const { address, chainId, isConnected } = useAccount({ config })
+    const wagmiConfig = useConfig()
+    const { address, chainId, isConnected } = useAccount({ wagmiConfig })
     const toast = useToast()
+    const runtimeConfig = useRuntimeConfig()
+
+    const fcMetaTag = JSON.stringify({
+      version: "1",
+      imageUrl: runtimeConfig.public.previewImageNftCreate,
+      button: {
+        title: "Launch your own NFT!",
+        action: {
+          type: "launch_miniapp",
+          name: runtimeConfig.public.projectName,
+          url: runtimeConfig.public.projectUrl,
+          splashImageUrl: runtimeConfig.public.farcasterSplashImageUrl,
+          splashBackgroundColor: runtimeConfig.public.farcasterSplashBackgroundColor
+        }
+      }
+    })
 
     return { 
       address, 
       chainId,  
+      fcMetaTag,
       isConnected,
       toast 
     }

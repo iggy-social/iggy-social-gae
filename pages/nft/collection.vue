@@ -1,7 +1,7 @@
 <template>
   <Head>
-    <Title>{{ metaTitle }}</Title>
-    <Meta property="og:title" :content="metaTitle" />
+    <Title>{{ metaTitle + ' | ' + $config.public.projectMetadataTitle }}</Title>
+    <Meta property="og:title" :content="metaTitle + ' | ' + $config.public.projectMetadataTitle" />
 
     <Meta name="description" :content="metaDescription" />
 
@@ -10,6 +10,21 @@
 
     <Meta name="twitter:image" :content="metaImage" />
     <Meta name="twitter:description" :content="metaDescription" />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: metaImage,
+        button: {
+          title: 'Check NFT: ' + metaTitle,
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: $config.public.projectUrl,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
 
   <div class="card border">
@@ -416,9 +431,9 @@ export default {
 
     metaTitle() {
       if (this.collectionData?.name) {
-        return this.collectionData.name + ' | ' + this.$config.public.projectMetadataTitle
+        return this.collectionData.name
       } else {
-        return 'NFT Collection Details | ' + this.$config.public.projectMetadataTitle
+        return 'NFT Collection Details'
       }
     },
 
@@ -1359,8 +1374,10 @@ export default {
   },
 
   setup() {
-    const config = useConfig()
-    const { address, chainId, isConnected } = useAccount({ config })
+    const wagmiConfig = useConfig()
+    const runtimeConfig = useRuntimeConfig()
+
+    const { address, chainId, isConnected } = useAccount({ wagmiConfig })
     const toast = useToast()
 
     const route = useRoute()
@@ -1371,7 +1388,8 @@ export default {
       if (!cAddress.value) return null
       
       // Call your server API and extract the data
-      const response = await $fetch(`/api/nft-collection/${cAddress.value}`)
+      const response = await $fetch(`/api/endpoint/nft-collection/${cAddress.value}`)
+
       return response.data // Extract just the collection data
     })
 

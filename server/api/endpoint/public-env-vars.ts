@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { getEnvVar } from '../utils/env-vars'
+import { getEnvVar } from '~/server/utils/env-vars'
 
 export default defineEventHandler(async (event) => {
   const envVars = {

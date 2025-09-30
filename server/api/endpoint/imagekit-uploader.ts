@@ -1,6 +1,6 @@
 import ImageKit from 'imagekit'
 import { defineEventHandler } from 'h3'
-import { getEnvVar } from '../utils/env-vars'
+import { getEnvVar } from '~/server/utils/env-vars'
 
 interface ImageKitAuthParams {
   token: string

@@ -1,6 +1,6 @@
 import Arweave from 'arweave'
 import { defineEventHandler, readBody } from 'h3'
-import { getEnvVar } from '../utils/env-vars'
+import { getEnvVar } from '~/server/utils/env-vars'
 
 interface ArweaveKeyFile {
   kty: string

@@ -26,8 +26,21 @@ export default defineNuxtConfig({
         },
         {
           name: 'fc:miniapp',
-          content: '{"version":"next", "imageUrl":"https://demo.iggy.social/img/farcaster/fc-image.png", "button":{"title":"A starter template for building Web3 applications with Wagmi and Nuxt", "action":{ "type":"launch_miniapp", "name":"Iggy Social", "url":"https://demo.iggy.social", "splashImageUrl":"https://demo.iggy.social/img/farcaster/fc-icon.png", "splashBackgroundColor":"#002b36"}}}',
-        },
+          content: JSON.stringify({
+            version: "1",
+            imageUrl: "https://demo.iggy.social/img/farcaster/fc-image.png",
+            button: {
+              title: "Open Iggy Social",
+              action: {
+                type: "launch_frame",
+                name: "Iggy Social",
+                url: "https://demo.iggy.social",
+                splashImageUrl: "https://demo.iggy.social/img/farcaster/fc-icon.png",
+                splashBackgroundColor: "#002b36"
+              }
+            }
+          })
+        }
       ],
       link: [
         {
@@ -86,6 +99,8 @@ export default defineNuxtConfig({
       expiryPfps: 1000 * 60 * 60 * 24 * 10, // must be in milliseconds (0 means no expiration)
       expiryUsernames: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       farcasterShareText: 'Check out Iggy Social - A starter template for building Web3 applications with Wagmi and Nuxt!',
+      farcasterSplashImageUrl: 'https://demo.iggy.social/img/farcaster/fc-icon.png',
+      farcasterSplashBackgroundColor: '#002b36',
       favicon: '/img/favicon.ico',
       fileUploadEnabled: true, // enable/disable file uploads (enable only if external file storage is used, e.g. Arweave)
       fileUploadSizeLimit: 1 * 1024 * 1024, // max file upload size in bytes (1 * 1024 * 1024 = 1 MB)
