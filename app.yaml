@@ -12,16 +12,6 @@ env_variables:
   NITRO_HOST: "0.0.0.0"
 
 handlers:
-  # PWA files
-  - url: /sw.js
-    static_files: .output/public/sw.js
-    upload: .output/public/sw.js
-
-  # PWA manifest
-  - url: /manifest.webmanifest
-    static_files: .output/public/manifest.webmanifest
-    upload: .output/public/manifest.webmanifest
-
   # Serve Nuxt build assets directly (faster, bypasses Node)
   - url: /_nuxt
     static_dir: .output/public/_nuxt

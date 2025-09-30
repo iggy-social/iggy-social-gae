@@ -10,7 +10,6 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt build && nuxt prepare",
-    "generate-pwa-icons": "node scripts/generate-pwa-icons.js",
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
@@ -22,7 +21,6 @@
     "@popperjs/core": "^2.11.8",
     "@tanstack/vue-query": ">=5.83.0",
     "@types/dompurify": "^3.0.5",
-    "@vite-pwa/nuxt": "^1.0.4",
     "@vueuse/core": "^13.6.0",
     "@wagmi/vue": "latest",
     "arweave": "^1.15.7",
