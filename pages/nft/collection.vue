@@ -19,7 +19,7 @@
           action: {
             type: 'launch_miniapp',
             name: $config.public.projectName,
-            url: $config.public.projectUrl,
+            url: $config.public.projectUrl + '/nft/collection/?id=' + $route.query.id,
             splashImageUrl: $config.public.farcasterSplashImageUrl,
             splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
           }

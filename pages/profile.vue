@@ -1,26 +1,88 @@
 <template>
   <Head>
-    <Title>Profile | {{ $config.public.projectMetadataTitle }}</Title>
-    <Meta name="description" :content="'Check out this profile on ' + $config.public.projectName + '!'" />
+    <Title>{{ metaTitle }} | {{ $config.public.projectMetadataTitle }}</Title>
+    <Meta name="description" :content="metaDescription" />
 
-    <Meta property="og:image" :content="$config.public.projectUrl + $config.public.previewImageProfile" />
-    <Meta property="og:description" :content="'Check out this profile on ' + $config.public.projectName + '!'" />
+    <Meta property="og:image" :content="metaImage" />
+    <Meta property="og:description" :content="metaDescription" />
 
-    <Meta name="twitter:image" :content="$config.public.projectUrl + $config.public.previewImageProfile" />
-    <Meta name="twitter:description" :content="'Check out this profile on ' + $config.public.projectName + '!'" />
+    <Meta name="twitter:image" :content="metaImage" />
+    <Meta name="twitter:description" :content="metaDescription" />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+      version: '1',
+      imageUrl: metaImage,
+      button: {
+        title: 'Check Profile: ' + metaTitle,
+        action: {
+          type: 'launch_miniapp',
+          name: $config.public.projectName,
+          url: $config.public.projectUrl + '/profile/?id=' + this.$route.query.id,
+          splashImageUrl: $config.public.farcasterSplashImageUrl,
+          splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+        }
+      }
+    })" />
   </Head>
 
   <PunkProfile :key="$route.query.id" class="mt-1" />
 </template>
 
 <script>
+import { isAddress } from 'viem'
 import PunkProfile from '@/components/profile/PunkProfile.vue'
+import { shortenAddress } from '@/utils/addressUtils'
 
 export default {
   name: 'Profile',
 
   components: {
     PunkProfile,
+  },
+
+  computed: {
+    metaDescription() {
+      if (this.profileData?.domainName) {
+        return "Profile page for " + this.profileData.domainName
+      } else if (String(this.$route.query.id).includes('.')) {
+        return "Profile page for " + this.$route.query.id
+      } else {
+        return 'Check out this profile on ' + this.$config.public.projectName + '!'
+      }
+    },
+    
+    metaImage() {
+      if (this.profileData?.image) {
+        return this.profileData.image
+      } else {
+        return this.$config.public.projectUrl + this.$config.public.previewImageProfile
+      }
+    },
+
+    metaTitle() {
+      if (this.profileData?.domainName) {
+        return this.profileData.domainName
+      } else if (String(this.$route.query.id).includes('.')) {
+        return this.$route.query.id
+      } else if (isAddress(this.$route.query.id)) {
+        return shortenAddress(this.$route.query.id)
+      }
+      
+      return null
+    },
+  },
+
+  setup() {
+    const route = useRoute()
+    const profileId = route.query.id
+
+    // use useAsyncData to fetch the profile data
+    const { data: profileData } = useAsyncData('profile', async () => {
+      const response = await $fetch(`/api/endpoint/profile-metadata?id=${profileId}`)
+      return response.data
+    })
+
+    return { profileData }
   },
 }
 </script>
