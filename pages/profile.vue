@@ -78,7 +78,7 @@ export default {
 
     // use useAsyncData to fetch the profile data
     const { data: profileData } = useAsyncData('profile', async () => {
-      const response = await $fetch(`/api/endpoint/profile-metadata?id=${profileId}`)
+      const response = await $fetch(`/api/endpoint/read/profile-metadata?id=${profileId}`)
       return response.data
     })
 

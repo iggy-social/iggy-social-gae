@@ -55,7 +55,7 @@ export default {
       } else if (this.$config.public.fileUploadTokenService === 'vercel') {
         fetcherService = thisAppUrl + '/api/arweaveUploader'
       } else if (this.$config.public.fileUploadTokenService === 'server') {
-        fetcherService = thisAppUrl + '/api/endpoint/arweave-uploader'
+        fetcherService = thisAppUrl + '/api/endpoint/write/arweave-uploader'
       }
 
       // Convert file to base64

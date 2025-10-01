@@ -1,7 +1,8 @@
 import { Datastore } from '@google-cloud/datastore';
+import { getProjectId } from '~/server/utils/project';
 
 const datastore = new Datastore({
-  projectId: 'iggy-social-gae' // TODO: change to your project ID
+  projectId: getProjectId()
 });
 
 export default datastore;

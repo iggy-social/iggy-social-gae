@@ -41,7 +41,6 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "semver": "^7.7.2",
-    "sharp": "^0.34.3"
+    "semver": "^7.7.2"
   }
 }

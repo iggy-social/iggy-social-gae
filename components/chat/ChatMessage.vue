@@ -487,7 +487,7 @@ export default {
             } else if (this.$config.public.linkPreviews === 'microlink') {
               fetcherService = 'https://api.microlink.io/?url=' + this.firstLink
             } else if (this.$config.public.linkPreviews === 'server') {
-              fetcherService = thisAppUrl + '/api/endpoint/link-previews?url=' + this.firstLink
+              fetcherService = thisAppUrl + '/api/endpoint/read/link-previews?url=' + this.firstLink
             }
 
             if (fetcherService) {

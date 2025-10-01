@@ -30,6 +30,10 @@ Go to Datastore on the Cloud Console and create the `EnvVar` kind. In the `EnvVa
 
 Also create other env vars, as listed in the `.env.example` file.
 
+## Server settings
+
+Go to `/server/utils/project.ts` and edit the values there.
+
 ## How to set up Google App Engine & Cloud Build
 
 - Create App Engine app
@@ -70,8 +74,7 @@ Also create other env vars, as listed in the `.env.example` file.
 Set Farcaster data in these files:
 
 - `/public/well-known/farcaster.json`
-- `app.vue`: edit the Meta tag with `name="fc:miniapp"` if needed, for example the splash bg color
-- `/pages/about.vue`: example of a custom Farcaster Meta tag (add custom meta tags on other pages too)
+- Edit the Meta tag with `name="fc:miniapp"` in components and in the Nuxt Config file (also edit farcaster variables in Nuxt Config)
 
 ## Cloudflare Tunnel for Farcaster testing
 

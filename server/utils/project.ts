@@ -1,8 +1,14 @@
 import { createPublicClient, http } from 'viem'
 
+const chainId = 421614; // TODO: enter the chain ID of the project
+
+export function getProjectId() {
+  return 'iggy-social-gae' // TODO: change to your project ID
+}
+
 // Arbitrum Sepolia chain configuration for server-side use
 export const customArbitrumSepolia = {
-  id: 421_614,
+  id: chainId,
   name: 'Arbitrum Sepolia',
   nativeCurrency: {
     name: 'Ether',

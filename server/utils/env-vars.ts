@@ -1,4 +1,4 @@
-import datastore from './datastore';
+import datastore from '~/server/utils/datastore';
 
 export async function getEnvVar(varkey: string) {
   if (process.env.MYLOCALHOST) {

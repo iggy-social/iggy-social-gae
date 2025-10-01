@@ -1,7 +1,8 @@
 import { defineEventHandler, getQuery, getRouterParam } from 'h3'
 import { isAddress } from 'viem'
 import { getWorkingUrl } from '~/utils/fileUtils'
-import { publicClient } from '~/server/utils/wagmi'
+import { publicClient } from '~/server/utils/project'
+import { fallbackNftAbi, metadataAbi, nftAbi } from '~/server/utils/abi'
 
 // endpoint to fetch collection data from blockchain
 export default defineEventHandler(async (event) => {
@@ -40,81 +41,6 @@ export default defineEventHandler(async (event) => {
     }
   }
 })
-
-// NFT Contract ABI
-const nftAbi = [
-  {
-    name: 'metadataAddress',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [{ type: 'address' }]
-  },
-  {
-    name: 'name',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [{ type: 'string' }]
-  }
-]
-
-// Metadata Contract ABI
-const metadataAbi = [
-  {
-    name: 'getCollectionDescription',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [{ name: 'nftAddress', type: 'address' }],
-    outputs: [{ type: 'string' }]
-  },
-  {
-    name: 'getCollectionMetadataType',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [{ name: 'nftAddress_', type: 'address' }],
-    outputs: [{ type: 'uint256' }]
-  },
-  {
-    name: 'getCollectionName',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [{ name: 'nftAddress_', type: 'address' }],
-    outputs: [{ type: 'string' }]
-  },
-  {
-    name: 'getCollectionPreviewImage',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [{ name: 'nftAddress', type: 'address' }],
-    outputs: [{ type: 'string' }]
-  }
-]
-
-// Fallback NFT ABI for non-native NFTs
-const fallbackNftAbi = [
-  {
-    name: 'name',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [{ type: 'string' }]
-  },
-  {
-    name: 'tokenURI',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [{ name: 'tokenId', type: 'uint256' }],
-    outputs: [{ type: 'string' }]
-  },
-  {
-    name: 'uri',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [{ name: 'tokenId', type: 'uint256' }],
-    outputs: [{ type: 'string' }]
-  }
-]
 
 // function to fetch collection data from blockchain for native NFTs
 async function fetchCollectionFromBlockchain(address: string) {

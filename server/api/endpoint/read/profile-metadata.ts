@@ -1,7 +1,8 @@
 import { isAddress } from 'viem'
-import { publicClient } from '@/server/utils/wagmi'
+import { publicClient } from '@/server/utils/project'
 import { getWorkingUrl } from '@/utils/fileUtils'
 import { getEnvVar } from '@/server/utils/env-vars'
+import { punkTldAbi } from '~/server/utils/abi'
 
 interface ProfileMetadata {
   image?: string
@@ -51,15 +52,7 @@ export default defineEventHandler(async (event) => {
         // Read domain data from contract
         const domainData = await publicClient.readContract({
           address: punkTldAddress as `0x${string}`,
-          abi: [
-            {
-              name: 'getDomainData',
-              type: 'function',
-              stateMutability: 'view',
-              inputs: [{ name: '_domainName', type: 'string' }],
-              outputs: [{ name: '', type: 'string' }]
-            }
-          ],
+          abi: punkTldAbi,
           functionName: 'getDomainData',
           args: [domainName]
         })
@@ -80,15 +73,7 @@ export default defineEventHandler(async (event) => {
         try {
           const walletAddress = await publicClient.readContract({
             address: punkTldAddress as `0x${string}`,
-            abi: [
-              {
-                name: 'getDomainHolder',
-                type: 'function',
-                stateMutability: 'view',
-                inputs: [{ name: '_domainName', type: 'string' }],
-                outputs: [{ name: '', type: 'address' }]
-              }
-            ],
+            abi: punkTldAbi,
             functionName: 'getDomainHolder',
             args: [domainName]
           })
@@ -111,15 +96,7 @@ export default defineEventHandler(async (event) => {
       try {
         const defaultDomain = await publicClient.readContract({
           address: punkTldAddress as `0x${string}`,
-          abi: [
-            {
-              inputs: [{ name: 'owner', type: 'address' }],
-              name: 'defaultNames',
-              outputs: [{ name: '', type: 'string' }],
-              stateMutability: 'view',
-              type: 'function'
-            }
-          ],
+          abi: punkTldAbi,
           functionName: 'defaultNames',
           args: [id as `0x${string}`]
         })
@@ -131,15 +108,7 @@ export default defineEventHandler(async (event) => {
           try {
             const domainData = await publicClient.readContract({
               address: punkTldAddress as `0x${string}`,
-              abi: [
-                {
-                  name: 'getDomainData',
-                  type: 'function',
-                  stateMutability: 'view',
-                  inputs: [{ name: '_domainName', type: 'string' }],
-                  outputs: [{ name: '', type: 'string' }]
-                }
-              ],
+              abi: punkTldAbi,
               functionName: 'getDomainData',
               args: [defaultDomain as string]
             })

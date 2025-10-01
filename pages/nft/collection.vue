@@ -1388,7 +1388,7 @@ export default {
       if (!cAddress.value) return null
       
       // Call your server API and extract the data
-      const response = await $fetch(`/api/endpoint/nft-collection/${cAddress.value}`)
+      const response = await $fetch(`/api/endpoint/read/nft-collection/${cAddress.value}`)
 
       return response.data // Extract just the collection data
     })
