@@ -1,9 +1,19 @@
 import { createPublicClient, http } from 'viem'
 
+const addressNftDirectory = "TODO: enter the address NFT directory";
 const chainId = 421614; // TODO: enter the chain ID of the project
+const kindNftCollection = "NftCollection";
 
 export function getProjectId() {
   return 'iggy-social-gae' // TODO: change to your project ID
+}
+
+export function getAddressNftDirectory() {
+  return addressNftDirectory;
+}
+
+export function getKindNftCollection() {
+  return kindNftCollection;
 }
 
 // Arbitrum Sepolia chain configuration for server-side use

@@ -261,3 +261,14 @@ export const punkTldAbi = [
     type: 'function'
   }
 ] as const;
+
+// NFT Directory Contract ABI
+export const nftDirectoryAbi = [
+  {
+    name: 'getNftContractAddress',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: '_uniqueId', type: 'string' }],
+    outputs: [{ name: '', type: 'address' }]
+  }
+] as const;

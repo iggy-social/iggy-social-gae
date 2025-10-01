@@ -392,6 +392,13 @@ export default {
               onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
             })
 
+            // add collection to the API
+            try {
+              await axios.get('/api/endpoint/write/add-collection?uniqueId='+this.uniqueId);
+            } catch (e) {
+              console.error(e);
+            }
+
             // after successful launch, fetch the collection address and redirect to the collection page
             const getNftContractAddressInterface = [
               {
