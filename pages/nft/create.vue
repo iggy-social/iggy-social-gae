@@ -225,6 +225,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { useToast } from 'vue-toastification/dist/index.mjs'
 import { formatEther, parseEther } from 'viem'
 import { useAccount, useConfig } from '@wagmi/vue'

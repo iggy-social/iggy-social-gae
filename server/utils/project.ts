@@ -1,7 +1,7 @@
 import { createPublicClient, http } from 'viem'
+import { baseSepolia } from '@wagmi/vue/chains'
 
-const addressNftDirectory = "TODO: enter the address NFT directory";
-const chainId = 421614; // TODO: enter the chain ID of the project
+const addressNftDirectory = "0x498e0e6B245898c5E2dD0299d0456a8928F58ECC"; // TODO: enter the address NFT directory
 const kindNftCollection = "NftCollection";
 
 export function getProjectId() {
@@ -16,36 +16,8 @@ export function getKindNftCollection() {
   return kindNftCollection;
 }
 
-// Arbitrum Sepolia chain configuration for server-side use
-export const customArbitrumSepolia = {
-  id: chainId,
-  name: 'Arbitrum Sepolia',
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  rpcUrls: {
-    default: {
-      http: [
-        'https://sepolia-rollup.arbitrum.io/rpc',
-        'https://arbitrum-sepolia.drpc.org',
-        'https://arbitrum-sepolia.therpc.io',
-        'https://arbitrum-sepolia.gateway.tenderly.co',
-      ],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'Arbiscan',
-      url: 'https://sepolia.arbiscan.io',
-    },
-  },
-  testnet: true,
-}
-
 // Create a shared public client for server-side blockchain interactions
 export const publicClient = createPublicClient({
-  chain: customArbitrumSepolia,
+  chain: baseSepolia,
   transport: http(),
 })
