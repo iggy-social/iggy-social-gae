@@ -1,7 +1,7 @@
 import { publicClient, getAddressNftDirectory } from '~/server/utils/project';
 import { nftDirectoryAbi } from '~/server/utils/abi';
-import { runTask } from '~/server/utils/tasks';
-import { sleep } from '~/server/utils/time';
+import { createTask } from '~/server/utils/tasks';
+import { sleep } from '~/server/utils/datetime';
 import { isAddress, zeroAddress } from 'viem';
 import type { Address } from 'viem';
 
@@ -10,7 +10,7 @@ const pauseMs = 500;
 // TASK: FIND NFT COLLECTION ADDRESS BY UNIQUE ID (call from when user creates a new collection)
 export default defineEventHandler(async (event) => {
   const hostname = getHeader(event, "x-appengine-default-version-hostname");
-  const uniqueId = getQuery(event).uniqueId as string;
+  const uniqueId = getQuery(event)['unique_id'] as string;
 
   // if uniqueId is not provided, return an error
   if (!uniqueId) {
@@ -48,9 +48,9 @@ export default defineEventHandler(async (event) => {
 
     // if nftAddress is not a zero address, call the task to add collection by address
     if (nftAddress && isAddress(nftAddress) && nftAddress !== zeroAddress) {
-      const taskUrl = `https://${hostname}/api/task/add-collection?nftAddress=${nftAddress}`;
+      const taskUrl = `https://${hostname}/api/task/add-collection?nft_address=${nftAddress}`;
       console.log(`Running the following task: ${taskUrl}`);
-      await runTask(taskUrl);
+      await createTask(taskUrl);
     }
     
     return "ok";

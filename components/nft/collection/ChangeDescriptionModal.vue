@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { useToast } from 'vue-toastification/dist/index.mjs'
 
 import WaitingToast from '@/components/WaitingToast'
@@ -122,6 +123,12 @@ export default {
             type: 'success',
             onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
           })
+
+          try {
+            await axios.get(`/api/endpoint/write/update-collection?nft_address=${this.cAddress}&scope=description`);
+          } catch (e) {
+            console.error(e);
+          }
 
           this.$emit('saveCollection', {
             description: this.editDescription.replace(/"/g, "'"), // replace double quotes with single quotes

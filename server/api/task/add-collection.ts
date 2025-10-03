@@ -4,12 +4,12 @@ import { getKindNftCollection } from '~/server/utils/project';
 
 // TASK: ADD NFT COLLECTION BY ADDRESS (call from cron job or another task)
 export default defineEventHandler(async (event) => {
-  const nftAddress = getQuery(event).nftAddress as string;
+  const nftAddress = getQuery(event)['nft_address'] as string;
   
   // CHECK IF NFT ADDRESS IS PROVIDED
   if (!nftAddress) {
-    console.log("nftAddress is required");
-    return "nftAddress is required";
+    console.log("nft_address is required");
+    return "nft_address is required";
   }
 
   // PRODUCTION: CHECK IF REQUEST COMES FROM GOOGLE CLOUD

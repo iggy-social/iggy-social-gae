@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { useToast } from 'vue-toastification/dist/index.mjs'
 import { useAccount, useConfig } from '@wagmi/vue'
 
@@ -149,6 +150,12 @@ export default {
             type: 'success',
             onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
           })
+
+          try {
+            await axios.get(`/api/endpoint/write/update-collection?nft_address=${this.cAddress}&scope=previewImage`);
+          } catch (e) {
+            console.error(e);
+          }
 
           this.$emit('saveCollection', {
             image: this.imageUrl,

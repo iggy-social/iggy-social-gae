@@ -395,7 +395,7 @@ export default {
 
             // add collection to the API
             try {
-              await axios.get('/api/endpoint/write/add-collection?uniqueId='+this.uniqueId);
+              await axios.get('/api/endpoint/write/add-collection?unique_id='+this.uniqueId);
             } catch (e) {
               console.error(e);
             }

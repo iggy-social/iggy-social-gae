@@ -5,7 +5,7 @@ const tasksClient = new CloudTasksClient({
   projectId: getProjectId()
 });
 
-export async function runTask(url: string) {
+export async function createTask(url: string) {
   const parent = tasksClient.queuePath(
     getProjectId(),
     "europe-west1", // TODO: change to the region you selected for your GAE app
