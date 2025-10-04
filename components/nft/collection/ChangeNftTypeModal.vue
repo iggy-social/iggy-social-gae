@@ -130,6 +130,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { useToast } from 'vue-toastification/dist/index.mjs'
 import WaitingToast from '@/components/WaitingToast'
 import { writeData } from '@/utils/contractUtils'
@@ -238,6 +239,14 @@ export default {
 
           // close the modal
           document.getElementById('closeModal-' + this.componentId).click()
+
+          // call the music & video NFTs endpoints so that API checks if this NFT is a music NFT or a video NFT
+          try {
+            await axios.get(`/api/endpoint/write/add-music-nft?nft_address=${this.cAddress}`);
+            await axios.get(`/api/endpoint/write/add-video-nft?nft_address=${this.cAddress}`);
+          } catch (e) {
+            console.error(e);
+          }
 
           this.waitingMetadata = false
         } else {

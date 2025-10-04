@@ -1,14 +1,19 @@
 import { defineEventHandler, getQuery, getRouterParam } from 'h3'
-import { isAddress } from 'viem'
+import { getAddress, isAddress } from 'viem'
 import { getWorkingUrl } from '~/utils/fileUtils'
 import { publicClient } from '~/server/utils/project'
 import { fallbackNftAbi, metadataAbi, nftAbi } from '~/server/utils/abi'
+import { getKindNftCollection } from '~/server/utils/project';
+import datastore from '~/server/utils/datastore';
+
+const kindNftCollection = getKindNftCollection();
 
 // endpoint to fetch collection data from blockchain
 export default defineEventHandler(async (event) => {
   try {
     // Try to get address from path parameter first, then fallback to query parameter
-    const address = getRouterParam(event, 'address') || getQuery(event).address as string
+    const addressRaw = getQuery(event)['nft_address'] as string
+    const address = getAddress(addressRaw)
 
     if (!address) {
       return {
@@ -24,10 +29,39 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // TODO: fetch collection data from datastore first
+    // fetch collection data from datastore first
+    if (!process.env.MYLOCALHOST) {
+      const key = datastore.key([kindNftCollection, address]);
+      const [exists] = await datastore.get(key);
+
+      if (exists) {
+        let nftImage = exists['previewImage']
+
+        if (nftImage.startsWith('ar://')) {
+          nftImage = nftImage.replace('ar://', 'https://arweave.net/')
+        }
+        if (nftImage.startsWith('ipfs://')) {
+          nftImage = nftImage.replace('ipfs://', 'https://ipfs.io/ipfs/')
+        }
+
+        const dataObj = {
+          name: exists['title'],
+          description: exists['description'],
+          image: nftImage,
+          nativeNft: true
+        }
+
+        return {
+          data: dataObj,
+          error: null
+        }
+      }
+    }
 
     // if not found, fetch from blockchain
     const collectionData = await fetchCollectionFromBlockchain(address)
+
+    console.log("collectionData:", collectionData)
 
     return {
       data: collectionData,

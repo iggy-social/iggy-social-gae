@@ -426,7 +426,19 @@ export default {
     },
     
     metaImage() {
-      return this.collectionData?.image || this.$config.public.projectUrl + this.$config.public.previewImageNftCollection
+      if (this.collectionData?.image) {
+        if (this.collectionData.image.startsWith('ar://')) {
+          return this.collectionData.image.replace('ar://', this.$config.public.arweaveGateway)
+        }
+
+        if (this.collectionData.image.startsWith('ipfs://')) {
+          return this.collectionData.image.replace('ipfs://', this.$config.public.ipfsGateway)
+        }
+
+        return this.collectionData.image
+      } else {
+        return this.$config.public.projectUrl + this.$config.public.previewImageNftCollection
+      }
     },
 
     metaTitle() {
@@ -1382,7 +1394,6 @@ export default {
 
   setup() {
     const wagmiConfig = useConfig()
-    const runtimeConfig = useRuntimeConfig()
 
     const { address, chainId, isConnected } = useAccount({ wagmiConfig })
     const toast = useToast()
@@ -1395,7 +1406,7 @@ export default {
       if (!cAddress.value) return null
       
       // Call your server API and extract the data
-      const response = await $fetch(`/api/endpoint/read/nft-collection/${cAddress.value}`)
+      const response = await axios.get(`/api/endpoint/read/link-preview-nft?nft_address=${cAddress.value}`)
 
       return response.data // Extract just the collection data
     })

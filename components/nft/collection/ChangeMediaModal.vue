@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "@/components/WaitingToast";
 import { writeData } from '@/utils/contractUtils'
@@ -209,6 +210,12 @@ export default {
             type: "success",
             onClick: () => window.open(this.$config.public.blockExplorerBaseUrl+"/tx/"+hash, '_blank').focus()
           });
+          
+          try {
+            await axios.get(`/api/endpoint/write/add-music-nft?nft_address=${this.cAddress}`);
+          } catch (e) {
+            console.error(e);
+          }
 
           this.audioUrl = null;
           this.waitingAudio = false;
@@ -294,6 +301,12 @@ export default {
             type: "success",
             onClick: () => window.open(this.$config.public.blockExplorerBaseUrl+"/tx/"+hash, '_blank').focus()
           });
+
+          try {
+            await axios.get(`/api/endpoint/write/add-video-nft?nft_address=${this.cAddress}`);
+          } catch (e) {
+            console.error(e);
+          }
 
           this.videoUrl = null;
           this.waitingVideo = false;
@@ -382,6 +395,12 @@ export default {
             type: "success",
             onClick: () => window.open(this.$config.public.blockExplorerBaseUrl+"/tx/"+hash, '_blank').focus()
           });
+
+          try {
+            await axios.get(`/api/endpoint/write/add-video-nft?nft_address=${this.cAddress}`);
+          } catch (e) {
+            console.error(e);
+          }
 
           this.youtubeUrl = null;
           this.waitingYoutube = false;
