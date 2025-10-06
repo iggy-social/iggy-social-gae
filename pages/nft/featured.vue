@@ -84,7 +84,7 @@ export default {
       this.waitingData = true;
 
       try {
-        // TODO: Fetch NFTs
+        // Fetch NFTs from API
         const response = await axios.get('/api/endpoint/read/nft-list-featured?limit=16');
 
         this.nftsList = response.data.topCollections;
@@ -97,6 +97,8 @@ export default {
       } catch (error) {
         console.error("Cannot fetch featured NFTs from API. Trying blockchain...");
       }
+
+      // FALLBACK TO BLOCKCHAIN (if no NFTs found in API or API is not working)
 
       console.log("Fetching featured NFTs from blockchain...");
 
