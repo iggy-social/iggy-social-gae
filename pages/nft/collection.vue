@@ -114,11 +114,7 @@
               </li>
 
               <li v-if="nftDirectoryAdminOrOwner">
-                <span 
-                  class="dropdown-item cursor-pointer" 
-                  @click="addToFeatured"
-                  :disabled="waitingAddToFeatured"
-                >
+                <span class="dropdown-item cursor-pointer" @click="addToFeatured" :disabled="waitingAddToFeatured">
                   <span
                     v-if="waitingAddToFeatured"
                     class="spinner-border spinner-border-sm mx-1"
@@ -126,6 +122,18 @@
                     aria-hidden="true"
                   ></span>
                   Add NFT to Featured NFTs
+                </span>
+              </li>
+
+              <li v-if="nftDirectoryAdminOrOwner">
+                <span class="dropdown-item cursor-pointer" @click="removeFromFeatured" :disabled="waitingRemoveFromFeatured">
+                  <span
+                    v-if="waitingRemoveFromFeatured"
+                    class="spinner-border spinner-border-sm mx-1"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Remove NFT from Featured NFTs
                 </span>
               </li>
 
@@ -357,6 +365,7 @@ export default {
       waitingMedia: false,
       waitingSell: false,
       waitingAddToFeatured: false,
+      waitingRemoveFromFeatured: false,
       youtubeUrl: null,
     }
   },
@@ -1319,6 +1328,92 @@ export default {
       }
 
       this.waitingData = false;
+    },
+
+    async removeFromFeatured() {
+      if (this.nftDirectoryAdminOrOwner) {
+        this.waitingRemoveFromFeatured = true
+
+        const nftDirectoryAbi = [
+          {
+            name: 'removeNftAddressFromFeatured',
+            type: 'function',
+            stateMutability: 'nonpayable',
+            inputs: [{ name: '_nftAddress', type: 'address' }],
+          },
+        ]
+
+        let toastWait;
+
+        try {
+          toastWait = this.toast(
+            {
+              component: WaitingToast,
+              props: {
+                text: 'Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer.',
+              },
+            },
+            {
+              type: 'info',
+              onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
+            },
+          )
+
+          const hash = await writeData({
+            address: this.nftDirectoryAddress,
+            abi: nftDirectoryAbi,
+            functionName: 'removeNftAddressFromFeatured',
+            args: [this.cAddress],
+          })
+
+          const receipt = await waitForTxReceipt(hash)
+
+          if (receipt.status === 'success') {
+            this.toast.dismiss(toastWait)
+
+            this.toast('You have successfully removed the NFT from the featured list. It may take a minute to update the featured list.', {
+              type: 'success',
+              onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
+            })
+
+            try {
+              await axios.get(`/api/endpoint/write/update-featured`);
+            } catch (e) {
+              console.error(e);
+            }
+
+            this.waitingRemoveFromFeatured = false
+          } else {
+            this.toast.dismiss(toastWait)
+            this.waitingRemoveFromFeatured = false
+            this.toast('Transaction has failed.', {
+              type: 'error',
+              onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
+            })
+            console.log(receipt)
+          }
+        } catch (e) {
+          console.error(e)
+          
+          try {
+            let extractMessage = e.message.split('Details:')[1]
+            extractMessage = extractMessage.split('Version: viem')[0]
+            extractMessage = extractMessage.replace(/"/g, '')
+            extractMessage = extractMessage.replace('execution reverted:', 'Error:')
+
+            console.log(extractMessage)
+
+            this.toast(extractMessage, { type: 'error' })
+          } catch (e) {
+            this.toast('Transaction has failed.', { type: 'error' })
+          }
+
+          this.waitingRemoveFromFeatured = false
+        } finally {
+          this.toast.dismiss(toastWait)
+          this.waitingRemoveFromFeatured = false
+        }
+      }
     },
 
     saveCollection(newCollectionData) {
