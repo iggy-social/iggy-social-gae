@@ -110,7 +110,7 @@ export default defineNuxtConfig({
       newsletterLink: 'https://paragraph.xyz/@iggy?modal=subscribe',
       nftDefaultRatio: 1, // default ratio for the NFT price bonding curve
       nftLaunchpadBondingAddress: '0xBdaba8106cdC29420c9A7Bb31066ED79c9b6Be74', // NFT launchpad with bonding curve contract address
-      nftLaunchpadLatestItems: 4, // number of latest NFTs to show in the NFT launchpad
+      nftLaunchpadFetchItems: 4, // number of NFTs to fetch from blockchain
       previewImage: '/img/covers/cover.png',
       previewImageAirdrop: '/img/covers/cover-airdrop.png',
       previewImageNftCollection: '/img/covers/cover-nft-collection.png',

@@ -10,8 +10,6 @@
   
     <Meta name="twitter:image" :content="$config.public.projectUrl+$config.public.previewImageNftLaunchpad" />
     <Meta name="twitter:description" content="Check these featured NFTs!" />
-
-    <Link rel="canonical" :href="$config.public.projectUrl+'/nft/featured'" />
   </Head>
   
   <div class="card border scroll-500">
@@ -36,7 +34,7 @@
 
       <NftListDropdown buttonText="Featured NFTs" />
 
-      <FeaturedNftsApi v-if="currentComponent === 'FeaturedNftsApi'" :nftsList="nftsList" :waitingData="waitingData" />
+      <FeaturedNftsApi v-if="currentComponent === 'FeaturedNftsApi'" :limit="limit" :nftsData="nftsData" :waiting="waitingData" />
       <FeaturedNftsBlockchain v-else-if="currentComponent === 'FeaturedNftsBlockchain'" />
   
     </div>
@@ -54,7 +52,7 @@ import FeaturedNftsBlockchain from '@/components/nft/list/FeaturedNftsBlockchain
 import NftListDropdown from '@/components/nft/list/NftListDropdown.vue';
 
 export default {
-  name: 'NftsMostHolders',
+  name: 'NftsFeatured',
   props: ["hideBackButton"],
 
   components: {
@@ -67,13 +65,16 @@ export default {
   data() {
     return {
       currentComponent: null,
-      nftsList: [],
+      limit: 12,
+      nftsData: null,
       waitingData: false
     }
   },
 
   mounted() {
-    this.fetchNfts();
+    if (this.$config.public.nftLaunchpadBondingAddress) {
+      this.fetchNfts()
+    }
 
     // set this component name as the current component in localStorage
     window.localStorage.setItem("currentNftPage", "/nft/featured");
@@ -85,11 +86,10 @@ export default {
 
       try {
         // Fetch NFTs from API
-        const response = await axios.get('/api/endpoint/read/nft-list-featured?limit=16');
+        const response = await axios.get(`/api/endpoint/read/nft-list-featured?limit=${this.limit}`);
 
-        this.nftsList = response.data.topCollections;
-
-        if (this.nftsList.length > 0) {
+        if (response.data.collections.length > 0) {
+          this.nftsData = response.data;
           this.currentComponent = "FeaturedNftsApi";
           return this.waitingData = false;
         }

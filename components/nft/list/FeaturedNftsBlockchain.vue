@@ -63,7 +63,7 @@ export default {
             }
           ],
           functionName: 'getFeaturedNftContracts',
-          args: [8]
+          args: [BigInt(this.$config.public.nftLaunchpadFetchItems)]
         }
 
         const featuredContracts = await readContract(this.config, launchpadContractConfig)

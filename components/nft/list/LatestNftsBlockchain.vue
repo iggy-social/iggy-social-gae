@@ -133,10 +133,10 @@ export default {
           if (this.allNftsIndexEnd === 0) {
             this.allNftsIndexEnd = this.allNftsArrayLength - 1
 
-            if (this.allNftsArrayLength < this.$config.public.nftLaunchpadLatestItems) {
+            if (this.allNftsArrayLength < this.$config.public.nftLaunchpadFetchItems) {
               this.allNftsIndexStart = 0
             } else {
-              this.allNftsIndexStart = this.allNftsArrayLength - this.$config.public.nftLaunchpadLatestItems
+              this.allNftsIndexStart = this.allNftsArrayLength - this.$config.public.nftLaunchpadFetchItems
             }
           }
 
@@ -156,14 +156,14 @@ export default {
 
             await this.parseNftsArray(lNftsWritable)
 
-            if (this.allNftsIndexEnd > this.$config.public.nftLaunchpadLatestItems) {
-              this.allNftsIndexEnd = Math.max(0, this.allNftsIndexEnd - this.$config.public.nftLaunchpadLatestItems)
+            if (this.allNftsIndexEnd > this.$config.public.nftLaunchpadFetchItems) {
+              this.allNftsIndexEnd = Math.max(0, this.allNftsIndexEnd - this.$config.public.nftLaunchpadFetchItems)
             } else {
               this.allNftsIndexEnd = 0
             }
 
-            if (this.allNftsIndexStart > this.$config.public.nftLaunchpadLatestItems) {
-              this.allNftsIndexStart = Math.max(0, this.allNftsIndexStart - this.$config.public.nftLaunchpadLatestItems)
+            if (this.allNftsIndexStart > this.$config.public.nftLaunchpadFetchItems) {
+              this.allNftsIndexStart = Math.max(0, this.allNftsIndexStart - this.$config.public.nftLaunchpadFetchItems)
             } else {
               this.allNftsIndexStart = 0
             }

@@ -19,7 +19,7 @@ import NftCollectionsList from '@/components/nft/list/NftCollectionsList.vue';
 
 export default {
   name: "LatestNftsApi",
-  props: ["nftsData", "waiting"],
+  props: ["limit", "nftsData", "waiting"],
 
   components: {
     NftCollectionsList

@@ -20,8 +20,8 @@
 
   <div class="card border scroll-500">
     <div class="card-body">
-      <p v-if="!hideBackButton" class="fs-3" @click="$router.back()">
-        <i class="bi bi-arrow-left-circle cursor-pointer"></i>
+      <p v-if="!hideBackButton" class="fs-3">
+        <i class="bi bi-arrow-left-circle cursor-pointer" @click="$router.back()"></i>
       </p>
 
       <h3 class="d-flex flex-row flex-wrap mt-3">
@@ -39,7 +39,7 @@
 
       <NftListDropdown buttonText="New NFTs" />
 
-      <LatestNftsApi v-if="currentComponent === 'LatestNftsApi'" :nftsData="nftsData" :waiting="waitingData" />
+      <LatestNftsApi v-if="currentComponent === 'LatestNftsApi'" :limit="limit" :nftsData="nftsData" :waiting="waitingData" />
       <LatestNftsBlockchain v-else-if="currentComponent === 'LatestNftsBlockchain'" />
     </div>
   </div>
@@ -49,25 +49,27 @@
 </template>
 
 <script>
+import axios from 'axios';
 import SearchNftModal from '@/components/nft/SearchNftModal.vue'
-import NftListDropdown from '@/components/nft/list/NftListDropdown.vue';
 import LatestNftsApi from '@/components/nft/list/LatestNftsApi.vue'
 import LatestNftsBlockchain from '@/components/nft/list/LatestNftsBlockchain.vue'
+import NftListDropdown from '@/components/nft/list/NftListDropdown.vue';
 
 export default {
   name: 'Nft',
   props: ['hideBackButton'],
 
   components: {
-    NftListDropdown,
-    SearchNftModal,
     LatestNftsApi,
-    LatestNftsBlockchain
+    LatestNftsBlockchain,
+    NftListDropdown,
+    SearchNftModal
   },
 
   data() {
     return {
       currentComponent: null,
+      limit: 8,
       nftsData: null,
       waitingData: false
     }
@@ -87,8 +89,8 @@ export default {
       this.waitingData = true;
 
       try {
-        // TODO: Fetch NFTs
-        const response = await axios.get('/api/endpoint/read/nft-list-latest?limit=8');
+        // Fetch NFTs from API
+        const response = await axios.get(`/api/endpoint/read/nft-list-latest?limit=${this.limit}`);
 
         if (response.data.collections.length > 0) {
           this.nftsData = response.data;

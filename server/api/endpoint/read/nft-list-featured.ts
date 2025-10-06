@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event)
     let limit = query.limit as string
+    let nextPageCursor = query.cursor as string
 
     // Validate and set limit
     let limitNum = 4 // default limit
@@ -23,6 +24,11 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    // Handle pagination cursor
+    if (nextPageCursor) {
+      nextPageCursor = String(nextPageCursor).trim().replace(/\s/g, '+')
+    }
+
     // Only run datastore queries in production
     if (!process.env.MYLOCALHOST) {
       try {
@@ -31,11 +37,16 @@ export default defineEventHandler(async (event) => {
           .createQuery(kindFeatured)
           .limit(limitNum)
         
-        const [featuredResults] = await datastore.runQuery(featuredQuery)
-        let featuredList = featuredResults
+        if (nextPageCursor) {
+          featuredQuery.start(nextPageCursor)
+        }
+        
+        const featuredResults = await datastore.runQuery(featuredQuery)
+        const featuredList = featuredResults[0]
+        const nextCursor = featuredResults[1]
         
         // Fetch collections data from NFT Collections
-        let topCollections: any[] = []
+        let collections: any[] = []
         const collectionPromises: Promise<void>[] = [] // Array to store promises
 
         for (const featured of featuredList) {
@@ -46,7 +57,7 @@ export default defineEventHandler(async (event) => {
               .then(entity => {
                 if (entity.length > 0) {
                   if (entity[0]["address"]) {
-                    topCollections.push(entity[0])
+                    collections.push(entity[0])
                   }
                 }
               })
@@ -66,7 +77,8 @@ export default defineEventHandler(async (event) => {
           success: true,
           code: 200,
           limit: limitNum,
-          topCollections: topCollections
+          collections: collections,
+          cursor: nextCursor
         }
       } catch (datastoreError) {
         console.error('Error fetching featured NFTs from datastore:', datastoreError)
@@ -82,7 +94,8 @@ export default defineEventHandler(async (event) => {
       success: true,
       code: 200,
       limit: limitNum,
-      topCollections: []
+      collections: [],
+      cursor: null
     }
 
   } catch (error: any) {
