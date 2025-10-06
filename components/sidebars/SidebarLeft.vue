@@ -27,7 +27,7 @@
             -->
 
             <!-- Activity Points -->
-            <div v-if="$config.public.activityPointsAddress && $config.public.showFeatures.activityPoints" class="mt-2">
+            <div v-if="$config.public.activityPointsAddress && $config.public.showFeatures.activityPoints" class="mt-2" @click="closeLeftSidebar">
               <NuxtLink to="/activity-points" class="btn btn-outline-primary btn-sm mt-2 mb-2">
                 {{ getUserAp }} AP
               </NuxtLink>

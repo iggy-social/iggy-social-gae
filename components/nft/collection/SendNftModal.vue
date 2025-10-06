@@ -289,6 +289,13 @@ export default {
             onClick: () => window.open(this.$config.public.blockExplorerBaseUrl+"/tx/"+hash, '_blank').focus()
           });
 
+          try {
+            await axios.get(`/api/endpoint/write/user-nfts-add?nft_address=${this.cAddress}&user_address=${this.recipientAddress}`); // add the NFT to the recipient's address
+            await axios.get(`/api/endpoint/write/user-nfts-add?nft_address=${this.cAddress}&user_address=${this.address}`); // remove the NFT from the sender's address
+          } catch (e) {
+            console.error(e);
+          }
+
           this.recipientAddress = null;
           this.recipientInput = null;
           this.tokenId = null;

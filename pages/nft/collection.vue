@@ -550,7 +550,7 @@ export default {
 
           try {
             await axios.get(`/api/endpoint/write/update-collection?nft_address=${this.cAddress}&scope=mint`);
-            //await axios.get(`/api/endpoint/write/add-user-nft?nft_address=${this.cAddress}&user_address=${this.address}`);
+            await axios.get(`/api/endpoint/write/user-nfts-add?nft_address=${this.cAddress}&user_address=${this.address}`);
           } catch (e) {
             console.error(e);
           }
@@ -692,6 +692,15 @@ export default {
 
       if (refresh) {
         collection = null
+
+        // update user's NFT balance in the API
+        if (this.address) {
+          try {
+            await axios.get(`/api/endpoint/write/user-nfts-add?nft_address=${this.cAddress}&user_address=${this.address}`);
+          } catch (e) {
+            console.error(e);
+          }
+        }
       }
 
       const nftAbi = [
@@ -1311,6 +1320,13 @@ export default {
             type: 'success',
             onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
           })
+
+          try {
+            await axios.get(`/api/endpoint/write/update-collection?nft_address=${this.cAddress}&scope=burn`);
+            await axios.get(`/api/endpoint/write/user-nfts-add?nft_address=${this.cAddress}&user_address=${this.address}`);
+          } catch (e) {
+            console.error(e);
+          }
 
           // Update prices and user data
           try {
