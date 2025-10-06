@@ -270,5 +270,12 @@ export const nftDirectoryAbi = [
     stateMutability: 'view',
     inputs: [{ name: '_uniqueId', type: 'string' }],
     outputs: [{ name: '', type: 'address' }]
+  },
+  {
+    name: 'getAllFeaturedNftContracts',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ name: '', type: 'address[]' }]
   }
 ] as const;

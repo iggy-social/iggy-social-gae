@@ -203,8 +203,8 @@ import { formatEther, formatUnits } from 'viem'
 import { useToast } from 'vue-toastification/dist/index.mjs'
 import { useAccount, useConfig } from '@wagmi/vue'
 
-import UserCreatedNfts from '~/components/nft/list/UserCreatedNfts.vue'
-import UserMintedNfts from '~/components/nft/list/UserMintedNfts.vue'
+import UserCreatedNfts from '@/components/nft/list/UserCreatedNfts.vue'
+import UserMintedNfts from '@/components/nft/list/UserMintedNfts.vue'
 import ChangePfpModal from '@/components/profile/ChangePfpModal.vue'
 import ProfileImage from '@/components/profile/ProfileImage.vue'
 

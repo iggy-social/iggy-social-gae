@@ -1,5 +1,5 @@
 import { defineEventHandler, getQuery, createError } from 'h3'
-import { getAddress, isAddress } from 'viem'
+import { getAddress } from 'viem'
 import { PropertyFilter } from '@google-cloud/datastore'
 import { getKindNftCollection, getMaxLimit } from '~/server/utils/project'
 import datastore from '~/server/utils/datastore'

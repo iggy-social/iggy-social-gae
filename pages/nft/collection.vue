@@ -113,6 +113,22 @@
                 </span>
               </li>
 
+              <li v-if="nftDirectoryAdminOrOwner">
+                <span 
+                  class="dropdown-item cursor-pointer" 
+                  @click="addToFeatured"
+                  :disabled="waitingAddToFeatured"
+                >
+                  <span
+                    v-if="waitingAddToFeatured"
+                    class="spinner-border spinner-border-sm mx-1"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Add NFT to Featured NFTs
+                </span>
+              </li>
+
               <li>
                 <span class="dropdown-item cursor-pointer" @click="getCollectionDetails(true)">Refresh metadata</span>
               </li>
@@ -306,6 +322,8 @@ import CollectionMediaSection from '@/components/nft/collection/CollectionMediaS
 import RemoveImageFromCollectionModal from '@/components/nft/collection/RemoveImageFromCollectionModal'
 import SendNftModal from '@/components/nft/collection/SendNftModal.vue';
 
+import { useAccountData } from '@/composables/useAccountData'
+
 import { shortenAddress } from '@/utils/addressUtils'
 import { fetchCollection, fetchUsername, storeCollection, storeUsername } from '@/utils/browserStorageUtils'
 import { readData, writeData } from '@/utils/contractUtils'
@@ -338,6 +356,7 @@ export default {
       waitingData: false,
       waitingMedia: false,
       waitingSell: false,
+      waitingAddToFeatured: false,
       youtubeUrl: null,
     }
   },
@@ -453,6 +472,92 @@ export default {
 
   methods: {
     getDomainName,
+
+    async addToFeatured() {
+      if (this.nftDirectoryAdminOrOwner) {
+        this.waitingAddToFeatured = true
+
+        const nftDirectoryAbi = [
+          {
+            name: 'addNftAddressToFeatured',
+            type: 'function',
+            stateMutability: 'nonpayable',
+            inputs: [{ name: '_nftAddress', type: 'address' }],
+          },
+        ]
+
+        let toastWait;
+
+        try {
+          toastWait = this.toast(
+            {
+              component: WaitingToast,
+              props: {
+                text: 'Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer.',
+              },
+            },
+            {
+              type: 'info',
+              onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
+            },
+          )
+
+          const hash = await writeData({
+            address: this.nftDirectoryAddress,
+            abi: nftDirectoryAbi,
+            functionName: 'addNftAddressToFeatured',
+            args: [this.cAddress],
+          })
+
+          const receipt = await waitForTxReceipt(hash)
+
+          if (receipt.status === 'success') {
+            this.toast.dismiss(toastWait)
+
+            this.toast('You have successfully added the NFT to the featured list. It may take a minute to appear in the featured list.', {
+              type: 'success',
+              onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
+            })
+
+            try {
+              await axios.get(`/api/endpoint/write/update-featured`);
+            } catch (e) {
+              console.error(e);
+            }
+
+            this.waitingAddToFeatured = false
+          } else {
+            this.toast.dismiss(toastWait)
+            this.waitingAddToFeatured = false
+            this.toast('Transaction has failed.', {
+              type: 'error',
+              onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
+            })
+            console.log(receipt)
+          }
+        } catch (e) {
+          console.error(e)
+          
+          try {
+            let extractMessage = e.message.split('Details:')[1]
+            extractMessage = extractMessage.split('Version: viem')[0]
+            extractMessage = extractMessage.replace(/"/g, '')
+            extractMessage = extractMessage.replace('execution reverted:', 'Error:')
+
+            console.log(extractMessage)
+
+            this.toast(extractMessage, { type: 'error' })
+          } catch (e) {
+            this.toast('Transaction has failed.', { type: 'error' })
+          }
+
+          this.waitingAddToFeatured = false
+        } finally {
+          this.toast.dismiss(toastWait)
+          this.waitingAddToFeatured = false
+        }
+      }
+    },
 
     async buyNft() {
       this.waitingBuy = true
@@ -1291,13 +1396,6 @@ export default {
       let toastWait;
 
       try {
-        const hash = await writeData({
-          address: this.cAddress,
-          abi: nftAbi,
-          functionName: 'burn',
-          args: [BigInt(this.userTokenId)],
-        })
-
         toastWait = this.toast(
           {
             component: WaitingToast,
@@ -1310,6 +1408,13 @@ export default {
             onClick: () => window.open(this.$config.public.blockExplorerBaseUrl + '/tx/' + hash, '_blank').focus(),
           },
         )
+
+        const hash = await writeData({
+          address: this.cAddress,
+          abi: nftAbi,
+          functionName: 'burn',
+          args: [BigInt(this.userTokenId)],
+        })
 
         const receipt = await waitForTxReceipt(hash)
 
@@ -1414,6 +1519,8 @@ export default {
     const { address, chainId, isConnected } = useAccount({ wagmiConfig })
     const toast = useToast()
 
+    const { nftDirectoryAdminOrOwner, nftDirectoryAddress } = useAccountData()
+
     const route = useRoute()
     const cAddress = computed(() => route.query?.id)
 
@@ -1433,6 +1540,8 @@ export default {
       chainId, 
       collectionData,
       isConnected, 
+      nftDirectoryAdminOrOwner,
+      nftDirectoryAddress,
       toast 
     }
   },

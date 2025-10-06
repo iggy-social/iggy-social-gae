@@ -77,7 +77,7 @@ import axios from 'axios';
 import { isAddress } from 'viem';
 import { useAccount } from '@wagmi/vue';
 import { useToast } from "vue-toastification/dist/index.mjs";
-import NftCollectionsList from '~/components/nft/list/NftCollectionsList.vue';
+import NftCollectionsList from '@/components/nft/list/NftCollectionsList.vue';
 
 export default {
   name: "UserMintedNfts",

@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { getAddress } from 'viem'
 import { useAccount, useConfig, useDisconnect, useConnect } from '@wagmi/vue'
 import { sdk } from '@farcaster/miniapp-sdk'
 import SiteSettingsModal from '@/components/SiteSettingsModal.vue'
@@ -52,6 +53,7 @@ import { useSidebars } from '@/composables/useSidebars'
 import { useSiteSettings } from '@/composables/useSiteSettings'
 import { useAccountData } from '@/composables/useAccountData'
 import { getActivityPoints, getArweaveBalance, getTokenBalanceWei } from '@/utils/balanceUtils'
+import { readData } from '@/utils/contractUtils'
 import { getDomainName } from '@/utils/domainUtils'
 import { parseReferrer } from '@/utils/referrerUtils'
 
@@ -227,10 +229,82 @@ export default {
         this.setChatTokenBalanceWei(balance)
       }
     },
+
+    async fetchNftDirectoryData() {
+      if (this.$config.public.nftLaunchpadBondingAddress && this.address) {
+        // get NFT directory address from NFT launchpad contract
+        const nftLaunchpadAbi = [
+          {
+            name: 'nftDirectoryAddress',
+            type: 'function',
+            stateMutability: 'view',
+            inputs: [],
+            outputs: [{ type: 'address' }]
+          },
+        ]
+
+        const nftDirectoryAddress = await readData({
+          address: this.$config.public.nftLaunchpadBondingAddress,
+          abi: nftLaunchpadAbi,
+          functionName: 'nftDirectoryAddress',
+          args: []
+        })
+
+        const nftDirectoryAbi = [
+          {
+            name: 'isManager',
+            type: 'function',
+            stateMutability: 'view',
+            inputs: [{ type: 'address' }],
+            outputs: [{ type: 'bool' }]
+          },
+          {
+            name: 'owner',
+            type: 'function',
+            stateMutability: 'view',
+            inputs: [],
+            outputs: [{ type: 'address' }]
+          },
+        ]
+
+        const isManager = await readData({
+          address: nftDirectoryAddress,
+          abi: nftDirectoryAbi,
+          functionName: 'isManager',
+          args: [this.address]
+        })
+
+        const owner = await readData({
+          address: nftDirectoryAddress,
+          abi: nftDirectoryAbi,
+          functionName: 'owner',
+          args: []
+        })
+
+        if (isManager || getAddress(owner) === getAddress(this.address)) {
+          this.setNftDirectoryAddress(nftDirectoryAddress)
+          this.setNftDirectoryAdminOrOwner(true)
+        } else {
+          this.setNftDirectoryAddress('')
+          this.setNftDirectoryAdminOrOwner(false)
+        }
+
+      } else {
+        this.setNftDirectoryAddress('')
+        this.setNftDirectoryAdminOrOwner(false)
+      }
+    }
   },
 
   setup() {
-    const { domainName, setCurrentUserActivityPoints, setDomainName, setChatTokenBalanceWei } = useAccountData()
+    const { 
+      domainName, 
+      setChatTokenBalanceWei,
+      setCurrentUserActivityPoints, 
+      setDomainName, 
+      setNftDirectoryAddress,
+      setNftDirectoryAdminOrOwner
+    } = useAccountData()
 
     const { mainContent, setLeftSidebar, setRightSidebar, setMainContent } = useSidebars()
     const { colorMode, setArweaveBalance, setEnvironment, setFileUploadEnabled } = useSiteSettings()
@@ -323,6 +397,8 @@ export default {
       setFileUploadEnabled,
       setLeftSidebar,
       setMainContent,
+      setNftDirectoryAddress,
+      setNftDirectoryAdminOrOwner,
       setRightSidebar,
       walletConnectConnector
     }
@@ -350,6 +426,7 @@ export default {
       if (newAddress && newAddress !== oldAddress) {
         const domain = await getDomainName(newAddress, window)
         this.setDomainName(domain)
+        this.fetchNftDirectoryData()
 
         if (!this.apAlreadyFetchedForAddress || this.apAlreadyFetchedForAddress !== newAddress) {
           this.fetchActivityPoints()

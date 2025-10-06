@@ -37,36 +37,7 @@
         </div>
       </h3>
 
-      <!-- NFT competition alert 
-    <div class="alert alert-primary mb-3 text-center" role="alert">
-      <NuxtLink to="/post/?id=kjzl6cwe1jw149z0ddpcygc1nhgjdppg1zpr8r4s0j8siaq0bod6u0v5dyaqr2c">
-        Create your NFT and win a 2000 {{ $config.public.tokenSymbol }} prize! Hurry up, the competition ends on Friday, 29 September!
-      </NuxtLink>
-    </div>
-    -->
-
-      <h4 class="mb-3" v-if="featuredNfts.length > 0">Featured</h4>
-
-      <div class="row" v-if="featuredNfts.length > 0">
-        <NuxtLink
-          v-for="nft in featuredNfts"
-          :key="nft.address"
-          class="col-md-3 text-decoration-none"
-          :to="'/nft/collection?id=' + nft.address"
-        >
-          <div class="card border mb-3">
-            <Image :url="nft.image" :alt="nft.name" cls="card-img-top" />
-            <div class="card-body rounded-bottom-3">
-              <p class="card-text mb-1">
-                <strong>{{ nft.name }}</strong>
-              </p>
-              <small class="card-text">{{ formatPrice(nft.price) }} {{ $config.public.tokenSymbol }}</small>
-            </div>
-          </div>
-        </NuxtLink>
-      </div>
-
-      <h4 class="mt-3 mb-3" v-if="lastNfts.length > 0">Latest</h4>
+      <NftListDropdown buttonText="New NFTs" />
 
       <div class="row">
         <NuxtLink
@@ -109,6 +80,7 @@ import { formatEther } from 'viem'
 
 import Image from '@/components/Image.vue'
 import SearchNftModal from '@/components/nft/SearchNftModal.vue'
+import NftListDropdown from '@/components/nft/list/NftListDropdown.vue';
 
 import { fetchCollection, storeCollection } from '@/utils/browserStorageUtils'
 import { readData } from '@/utils/contractUtils';
@@ -124,7 +96,6 @@ export default {
       allNftsArrayLength: 0,
       allNftsIndexStart: 0,
       allNftsIndexEnd: 0,
-      featuredNfts: [],
       lastNfts: [],
       waitingData: false,
     }
@@ -132,14 +103,17 @@ export default {
 
   components: {
     Image,
+    NftListDropdown,
     SearchNftModal,
   },
 
   mounted() {
     if (this.$config.public.nftLaunchpadBondingAddress) {
-      this.fetchFeaturedNfts()
       this.fetchLastNfts()
     }
+
+    // set this component name as the current component in localStorage
+    window.localStorage.setItem("currentNftPage", "/nft");
   },
 
   computed: {
@@ -149,39 +123,6 @@ export default {
   },
 
   methods: {
-    async fetchFeaturedNfts() {
-      this.waitingData = true
-
-      try {
-        // create launchpad contract config for readData
-        const launchpadContractConfig = {
-          address: this.$config.public.nftLaunchpadBondingAddress,
-          abi: [
-            {
-              name: 'getFeaturedNftContracts',
-              type: 'function',
-              stateMutability: 'view',
-              inputs: [{ name: 'amount', type: 'uint256' }],
-              outputs: [{ name: '', type: 'address[]' }]
-            }
-          ],
-          functionName: 'getFeaturedNftContracts',
-          args: [BigInt(4)]
-        }
-
-        // get featured NFTs using readData
-        const fNfts = await readData(launchpadContractConfig)
-        
-        if (fNfts) {
-          await this.parseNftsArray(fNfts, this.featuredNfts)
-        }
-      } catch (error) {
-        console.error('Error fetching featured NFTs:', error)
-      } finally {
-        this.waitingData = false
-      }
-    },
-
     async fetchLastNfts() {
       this.waitingData = true
 

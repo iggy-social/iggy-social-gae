@@ -5,6 +5,8 @@ export function useAccountData() {
   const activityPoints = useState<number | null>('activityPoints', () => null)
   const chatTokenBalanceWei = useState<bigint | null>('chatTokenBalanceWei', () => null)
   const domainName = useState<string>('domainName', () => '')
+  const nftDirectoryAddress = useState<string>('nftDirectoryAddress', () => '')
+  const nftDirectoryAdminOrOwner = useState<boolean>('nftDirectoryAdminOrOwner', () => false)
 
   // GETTERS
 
@@ -28,6 +30,14 @@ export function useAccountData() {
     return activityPoints.value
   }
 
+  function getNftDirectoryAddress(): string {
+    return nftDirectoryAddress.value
+  }
+
+  function getNftDirectoryAdminOrOwner(): boolean {
+    return nftDirectoryAdminOrOwner.value
+  }
+
   // SETTERS
   function addToChatTokenBalanceWei(balance: bigint) {
     if (!chatTokenBalanceWei.value) {
@@ -48,20 +58,34 @@ export function useAccountData() {
     domainName.value = domain
   }
 
+  function setNftDirectoryAddress(address: string): void {
+    nftDirectoryAddress.value = address
+  }
+
+  function setNftDirectoryAdminOrOwner(adminOrOwner: boolean): void {
+    nftDirectoryAdminOrOwner.value = adminOrOwner
+  }
+
   return {
     // Core properties
     domainName: computed(() => getCurrentDomainName()),
+    nftDirectoryAddress: computed(() => getNftDirectoryAddress()),
+    nftDirectoryAdminOrOwner: computed(() => getNftDirectoryAdminOrOwner()),
 
     // getters
     getChatTokenBalanceWei,
     getChatTokenBalance,
     getCurrentDomainName,
     getCurentUserActivityPoints,
+    getNftDirectoryAddress,
+    getNftDirectoryAdminOrOwner,
 
     // setters
     addToChatTokenBalanceWei,
     setChatTokenBalanceWei,
     setCurrentUserActivityPoints,
     setDomainName,
+    setNftDirectoryAddress,
+    setNftDirectoryAdminOrOwner,
   }
 } 

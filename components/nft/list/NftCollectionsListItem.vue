@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import Image from '~/components/Image.vue';
-import { getDomainName } from '~/utils/domainUtils';
-import { getLessDecimals } from '~/utils/numberUtils';
+import Image from '@/components/Image.vue';
+import { getDomainName } from '@/utils/domainUtils';
+import { getLessDecimals } from '@/utils/numberUtils';
 
 export default {
   name: 'NftCollectionsListItem',
