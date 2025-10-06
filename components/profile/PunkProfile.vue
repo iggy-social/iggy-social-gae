@@ -77,7 +77,7 @@
                   <span
                     class="dropdown-item cursor-pointer"
                     data-bs-toggle="modal"
-                    :data-bs-target="'#changeImageModal' + $.uid"
+                    :data-bs-target="'#changeImageModal' + compId()"
                   >
                     <i class="bi bi-person-circle"></i> Change your profile picture
                   </span>
@@ -138,11 +138,61 @@
         v-if="isCurrentUser"
         :key="domain"
         :domainName="domain"
-        :componentId="$.uid"
+        :componentId="compId()"
         storageType="arweave" 
         @processFileUrl="insertImage"
       />
       <!-- END Change Image Modal -->
+    </div>
+
+    <div class="card border mt-3 mb-3" v-if="$config.public.showFeatures.nftLaunchpad">
+      <div class="card-body">
+
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs nav-fill">
+
+          <!--
+          <li class="nav-item">
+            <button 
+              class="nav-link" 
+              :class="currentTab === 'posts' ? 'active' : ''" 
+              @click="changeCurrentTab('posts')" 
+            >Posts</button>
+          </li>
+          -->
+          <li class="nav-item">
+            <button 
+              class="nav-link" 
+              :class="currentTab === 'created' ? 'active' : ''" 
+              @click="changeCurrentTab('created')" 
+            >Created</button>
+          </li>
+
+          <li class="nav-item">
+            <button 
+              class="nav-link" 
+              :class="currentTab === 'nft-mints' ? 'active' : ''" 
+              @click="changeCurrentTab('nft-mints')" 
+            >Minted</button>
+          </li>
+
+        </ul>
+
+        <!-- Tabs Content -->
+      <div class="tab-content mt-3">
+
+        <!-- Created NFTs Tab -->
+        <div v-if="currentTab === 'created' && uAddress">
+          <UserCreatedNfts :uAddress="uAddress" :limit="8" />
+        </div>
+
+        <!-- Minted NFTs Tab -->
+        <div v-if="currentTab === 'nft-mints' && uAddress">
+          <UserMintedNfts :uAddress="uAddress" :limit="8" />
+        </div>
+      </div>
+
+      </div>
     </div>
 
   </div>
@@ -153,6 +203,8 @@ import { formatEther, formatUnits } from 'viem'
 import { useToast } from 'vue-toastification/dist/index.mjs'
 import { useAccount, useConfig } from '@wagmi/vue'
 
+import UserCreatedNfts from '~/components/nft/list/UserCreatedNfts.vue'
+import UserMintedNfts from '~/components/nft/list/UserMintedNfts.vue'
 import ChangePfpModal from '@/components/profile/ChangePfpModal.vue'
 import ProfileImage from '@/components/profile/ProfileImage.vue'
 
@@ -174,8 +226,8 @@ export default {
     return {
       balanceAp: 0,
       balanceChatTokenWei: BigInt(0),
+      currentTab: 'created',
       domain: this.pDomain,
-      newEmail: null,
       newImageLink: null,
       uAddress: this.pAddress,
       uBalance: BigInt(0),
@@ -187,9 +239,18 @@ export default {
   components: {
     ChangePfpModal,
     ProfileImage,
+    UserCreatedNfts,
+    UserMintedNfts,
   },
 
   mounted() {
+    // get profileCurrentTab from localStorage
+    this.currentTab = localStorage.getItem("profileCurrentTab");
+
+    if (!this.currentTab || this.currentTab === "mints") {
+      this.currentTab = "created";
+    }
+
     // if uAddress and/or domain is not provided via props, then find it yourself
     if (!this.pAddress || !this.pDomain) {
       this.fetchAddressAndDomain()
@@ -226,6 +287,12 @@ export default {
     changeCurrentTab(tab) {
       this.currentTab = tab
       localStorage.setItem('profileCurrentTab', tab)
+    },
+
+    compId() {
+      // Use domain + address to create a stable ID that's consistent between server and client
+      const baseId = this.domain || this.uAddress || 'default'
+      return baseId.replace(/[^a-zA-Z0-9]/g, '').substring(0, 10)
     },
 
     async fetchAddressAndDomain() {

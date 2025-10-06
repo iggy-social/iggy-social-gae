@@ -9,6 +9,7 @@ const kindTradingVolumeDaily = "TradingVolumeDaily";
 const kindTradingVolumeWeekly = "TradingVolumeWeekly";
 const kindUserNfts = "UserNfts";
 const kindVideoNfts = "VideoNfts";
+const maxLimit = 16;
 
 export function getProjectId() {
   return 'iggy-social-gae' // TODO: change to your project ID
@@ -44,6 +45,10 @@ export function getKindUserNfts() {
 
 export function getKindVideoNfts() {
   return kindVideoNfts;
+}
+
+export function getMaxLimit() {
+  return maxLimit; // Maximum number of items to return in a single request
 }
 
 // Create a shared public client for server-side blockchain interactions
