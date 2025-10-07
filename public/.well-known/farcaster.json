@@ -10,13 +10,13 @@
     "subtitle": "A starter template for building Web3 applications with Wagmi and Nuxt",
     "buttonTitle": "A starter template for building Web3 applications with Wagmi and Nuxt",
     "description": "A starter template for building Web3 applications with Wagmi and Nuxt",
-    "tags": ["send", "token", "transfer", "domain", "name"],
-    "primaryCategory": "utility",
-    "homeUrl": "https://demo.iggy.social",
-    "iconUrl": "https://demo.iggy.social/img/farcaster/fc-icon.png",
-    "heroImageUrl": "https://demo.iggy.social/img/farcaster/fc-hero.png",
-    "imageUrl": "https://demo.iggy.social/img/farcaster/fc-image.png",
-    "splashImageUrl": "https://demo.iggy.social/img/farcaster/fc-icon.png",
+    "tags": ["iggy", "social", "web3", "template", "nft"],
+    "primaryCategory": "entertainment",
+    "homeUrl": "https://gae.iggy.social",
+    "iconUrl": "https://gae.iggy.social/img/farcaster/fc-icon.png",
+    "heroImageUrl": "https://gae.iggy.social/img/farcaster/fc-hero.png",
+    "imageUrl": "https://gae.iggy.social/img/farcaster/fc-image.png",
+    "splashImageUrl": "https://gae.iggy.social/img/farcaster/fc-icon.png",
     "splashBackgroundColor": "#002b36"
   }
 }

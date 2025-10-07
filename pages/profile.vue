@@ -13,7 +13,7 @@
       version: '1',
       imageUrl: metaImage,
       button: {
-        title: 'Check Profile: ' + metaTitle,
+        title: 'Profile: ' + metaTitle,
         action: {
           type: 'launch_miniapp',
           name: $config.public.projectName,
@@ -76,8 +76,9 @@ export default {
     const route = useRoute()
     const profileId = route.query.id
 
-    // use useAsyncData to fetch the profile data
+    // fetch data for meta tags (link previews)
     const { data: profileData } = useAsyncData('profile', async () => {
+      // important: use $fetch instead of axios otherwise it may not work properly
       const response = await $fetch(`/api/endpoint/read/profile-metadata?id=${profileId}`)
       return response.data
     })

@@ -1621,11 +1621,11 @@ export default {
     const route = useRoute()
     const cAddress = computed(() => route.query?.id)
 
-    // Use useAsyncData for server-side data fetching
+    // fetch data for meta tags (link previews)
     const { data: collectionData } = useAsyncData('collection', async () => {
       if (!cAddress.value) return null
       
-      // Call your server API and extract the data
+      // important: use $fetch instead of axios otherwise it may not work properly
       const response = await $fetch(`/api/endpoint/read/link-preview-nft?nft_address=${cAddress.value}`)
 
       return response.data // Extract just the collection data

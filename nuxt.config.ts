@@ -24,14 +24,14 @@ export default defineNuxtConfig({
           name: 'fc:miniapp',
           content: JSON.stringify({
             version: "1",
-            imageUrl: "https://demo.iggy.social/img/farcaster/fc-image.png",
+            imageUrl: "https://gae.iggy.social/img/farcaster/fc-image.png",
             button: {
               title: "Open Iggy Social",
               action: {
                 type: "launch_frame",
                 name: "Iggy Social",
-                url: "https://demo.iggy.social",
-                splashImageUrl: "https://demo.iggy.social/img/farcaster/fc-icon.png",
+                url: "https://gae.iggy.social",
+                splashImageUrl: "https://gae.iggy.social/img/farcaster/fc-icon.png",
                 splashBackgroundColor: "#002b36"
               }
             }
@@ -90,7 +90,7 @@ export default defineNuxtConfig({
       expiryPfps: 1000 * 60 * 60 * 24 * 10, // must be in milliseconds (0 means no expiration)
       expiryUsernames: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       farcasterShareText: 'Check out Iggy Social - A starter template for building Web3 applications with Wagmi and Nuxt!',
-      farcasterSplashImageUrl: 'https://demo.iggy.social/img/farcaster/fc-icon.png',
+      farcasterSplashImageUrl: 'https://gae.iggy.social/img/farcaster/fc-icon.png',
       farcasterSplashBackgroundColor: '#002b36',
       favicon: '/img/favicon.ico',
       fileUploadEnabled: true, // enable/disable file uploads (enable only if external file storage is used, e.g. Arweave)
@@ -124,7 +124,7 @@ export default defineNuxtConfig({
       projectName: 'Iggy Demo',
       projectDescription: 'A starter template for Wagmi Nuxt projects',
       projectTwitter: '@example',
-      projectUrl: 'https://demo.iggy.social',
+      projectUrl: 'https://gae.iggy.social',
       punkMinterAddress: '', // punk domain minter contract address
       punkNumberOfPrices: 1, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: '0xD9FF69E89D9B6a7f18a46e9151c48BfBF687B7da', // punk domain TLD address
