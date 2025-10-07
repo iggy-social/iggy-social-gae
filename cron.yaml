@@ -2,3 +2,6 @@ cron:
 - description: "Check featured NFTs"
   url: /api/cron/check-featured-nfts
   schedule: every 72 hours
+- description: "Store past volume data in datastore"
+  url: /api/cron/store-historic-stats
+  schedule: every day 10:00

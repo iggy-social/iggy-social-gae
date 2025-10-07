@@ -10,9 +10,16 @@ const kindTradingVolumeWeekly = "TradingVolumeWeekly";
 const kindUserNfts = "UserNfts";
 const kindVideoNfts = "VideoNfts";
 const maxLimit = 16;
+const nativeTokenCoingeckoId = "ethereum"; // TODO: change to the native token of the chain
+const projectId = "iggy-social-gae"; // TODO: change to your project ID
+const selectedChain = baseSepolia; // TODO: change to the chain you are using
 
-export function getProjectId() {
-  return 'iggy-social-gae' // TODO: change to your project ID
+export function getAddressNftDirectory() {
+  return addressNftDirectory;
+}
+
+export function getChainId() {
+  return selectedChain.id;
 }
 
 export function getKindFeatured() {
@@ -21,10 +28,6 @@ export function getKindFeatured() {
 
 export function getKindMusicNfts() {
   return kindMusicNfts;
-}
-
-export function getAddressNftDirectory() {
-  return addressNftDirectory;
 }
 
 export function getKindNftCollection() {
@@ -51,8 +54,16 @@ export function getMaxLimit() {
   return maxLimit; // Maximum number of items to return in a single request
 }
 
+export function getNativeTokenCoingeckoId() {
+  return nativeTokenCoingeckoId;
+}
+
+export function getProjectId() {
+  return projectId;
+}
+
 // Create a shared public client for server-side blockchain interactions
 export const publicClient = createPublicClient({
-  chain: baseSepolia,
+  chain: selectedChain,
   transport: http(),
 })
