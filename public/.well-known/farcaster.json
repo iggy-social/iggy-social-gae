@@ -1,14 +1,14 @@
 {
   "accountAssociation": {
-    "header": "",
-    "payload": "",
-    "signature": ""
+    "header": "eyJmaWQiOjExMjk5LCJ0eXBlIjoiYXV0aCIsImtleSI6IjB4RTY0QUU2QjZjN0JEQUZlZmFkNzY4RDkzNTRiQkVEMkM1NUM5QjBGMiJ9",
+    "payload": "eyJkb21haW4iOiJnYWUuaWdneS5zb2NpYWwifQ",
+    "signature": "tXnrAAxXSFjp3XDpiNX9x3JiiodnoK95ia7FiB8WCoIsLYUBfbn6YTXS7TWrjFJ5Od9jJPyqxwgY7ZDC2F9B2Rs="
   },
   "miniapp": {
     "version": "1",
     "name": "Iggy Social",
-    "subtitle": "A starter template for building Web3 applications with Wagmi and Nuxt",
-    "buttonTitle": "A starter template for building Web3 applications with Wagmi and Nuxt",
+    "subtitle": "Web3 Starter Template",
+    "buttonTitle": "Web3 Starter Template",
     "description": "A starter template for building Web3 applications with Wagmi and Nuxt",
     "tags": ["iggy", "social", "web3", "template", "nft"],
     "primaryCategory": "entertainment",
