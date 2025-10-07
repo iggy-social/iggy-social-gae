@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { isAddress } from 'viem'
 import PunkProfile from '@/components/profile/PunkProfile.vue'
 import { shortenAddress } from '@/utils/addressUtils'
@@ -43,8 +42,8 @@ export default {
 
   computed: {
     metaDescription() {
-      if (this.profileData?.data?.domainName) {
-        return "Profile page for " + this.profileData.data.domainName
+      if (this.profileData?.domainName) {
+        return "Profile page for " + this.profileData.domainName
       } else if (String(this.$route.query.id).includes('.')) {
         return "Profile page for " + this.$route.query.id
       } else {
@@ -53,16 +52,16 @@ export default {
     },
     
     metaImage() {
-      if (this.profileData?.data?.image) {
-        return this.profileData.data.image
+      if (this.profileData?.image) {
+        return this.profileData.image
       } else {
         return this.$config.public.projectUrl + this.$config.public.previewImageProfile
       }
     },
 
     metaTitle() {
-      if (this.profileData?.data?.domainName) {
-        return this.profileData.data.domainName
+      if (this.profileData?.domainName) {
+        return this.profileData.domainName
       } else if (String(this.$route.query.id).includes('.')) {
         return this.$route.query.id
       } else if (isAddress(this.$route.query.id)) {
@@ -79,7 +78,7 @@ export default {
 
     // use useAsyncData to fetch the profile data
     const { data: profileData } = useAsyncData('profile', async () => {
-      const response = await axios.get(`/api/endpoint/read/profile-metadata?id=${profileId}`)
+      const response = await $fetch(`/api/endpoint/read/profile-metadata?id=${profileId}`)
       return response.data
     })
 

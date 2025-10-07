@@ -450,18 +450,18 @@ export default {
     },
     
     metaDescription() {
-      return this.collectionData?.data?.description || 'Check this NFT collection on ' + this.$config.public.projectName + '!'
+      return this.collectionData?.description || 'Check this NFT collection on ' + this.$config.public.projectName + '!'
     },
     
     metaImage() {
-      if (this.collectionData?.data?.image) {
-        let image = this.collectionData.data.image
+      if (this.collectionData?.image) {
+        let image = this.collectionData.image
 
-        if (this.collectionData.data.image.startsWith('ar://')) {
+        if (this.collectionData.image.startsWith('ar://')) {
           return image.replace('ar://', this.$config.public.arweaveGateway)
         }
 
-        if (this.collectionData.data.image.startsWith('ipfs://')) {
+        if (this.collectionData.image.startsWith('ipfs://')) {
           return image.replace('ipfs://', this.$config.public.ipfsGateway)
         }
 
@@ -472,8 +472,8 @@ export default {
     },
 
     metaTitle() {
-      if (this.collectionData?.data?.name) {
-        return this.collectionData.data.name
+      if (this.collectionData?.name) {
+        return this.collectionData.name
       } else {
         return 'NFT Collection Details'
       }
@@ -1626,7 +1626,7 @@ export default {
       if (!cAddress.value) return null
       
       // Call your server API and extract the data
-      const response = await axios.get(`/api/endpoint/read/link-preview-nft?nft_address=${cAddress.value}`)
+      const response = await $fetch(`/api/endpoint/read/link-preview-nft?nft_address=${cAddress.value}`)
 
       return response.data // Extract just the collection data
     })
