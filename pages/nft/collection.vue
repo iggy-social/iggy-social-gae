@@ -450,28 +450,30 @@ export default {
     },
     
     metaDescription() {
-      return this.collectionData?.description || 'Check this NFT collection on ' + this.$config.public.projectName + '!'
+      return this.collectionData?.data?.description || 'Check this NFT collection on ' + this.$config.public.projectName + '!'
     },
     
     metaImage() {
-      if (this.collectionData?.image) {
-        if (this.collectionData.image.startsWith('ar://')) {
-          return this.collectionData.image.replace('ar://', this.$config.public.arweaveGateway)
+      if (this.collectionData?.data?.image) {
+        let image = this.collectionData.data.image
+
+        if (this.collectionData.data.image.startsWith('ar://')) {
+          return image.replace('ar://', this.$config.public.arweaveGateway)
         }
 
-        if (this.collectionData.image.startsWith('ipfs://')) {
-          return this.collectionData.image.replace('ipfs://', this.$config.public.ipfsGateway)
+        if (this.collectionData.data.image.startsWith('ipfs://')) {
+          return image.replace('ipfs://', this.$config.public.ipfsGateway)
         }
 
-        return this.collectionData.image
+        return image
       } else {
         return this.$config.public.projectUrl + this.$config.public.previewImageNftCollection
       }
     },
 
     metaTitle() {
-      if (this.collectionData?.name) {
-        return this.collectionData.name
+      if (this.collectionData?.data?.name) {
+        return this.collectionData.data.name
       } else {
         return 'NFT Collection Details'
       }
@@ -1620,7 +1622,7 @@ export default {
     const cAddress = computed(() => route.query?.id)
 
     // Use useAsyncData for server-side data fetching
-    const { data: collectionData, pending, error } = useAsyncData('collection', async () => {
+    const { data: collectionData } = useAsyncData('collection', async () => {
       if (!cAddress.value) return null
       
       // Call your server API and extract the data
