@@ -1,4 +1,4 @@
-import { getAddress, isAddress } from 'viem';
+import { getAddress } from 'viem';
 import datastore from '~/server/utils/datastore';
 import { getAddressNftDirectory, getKindFeatured, publicClient } from '~/server/utils/project';
 import { nftDirectoryAbi } from '~/server/utils/abi';
@@ -15,14 +15,13 @@ export default defineEventHandler(async (event) => {
       console.log("This is NOT a request from Google Cloud!");
       throw createError({
         statusCode: 403,
-        statusMessage: "Sorry, but you cannot call this task directly!"
+        statusMessage: "Sorry, but you cannot call this URL directly!"
       });
     }
   }
 
   const addressNftDirectory = getAddressNftDirectory();
   const kindFeatured = getKindFeatured();
-
 
   try {
     // Fetch all featured NFT addresses from blockchain

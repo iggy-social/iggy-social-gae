@@ -16,7 +16,7 @@ steps:
         path: /root/.npm
 
   - name: "gcr.io/cloud-builders/gcloud"
-    args: ["app", "deploy", 'app.yaml']  # , 'cron.yaml', 'index.yaml'
+    args: ["app", "deploy", 'app.yaml', 'cron.yaml']  # , 'index.yaml'
     timeout: "1600s"  # Adjust the timeout as needed
 
 timeout: "2800s"  # Adjust the overall build timeout as needed

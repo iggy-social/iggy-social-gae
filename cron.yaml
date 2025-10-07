@@ -1,0 +1,4 @@
+cron:
+- description: "Check featured NFTs"
+  url: /api/cron/check-featured-nfts
+  schedule: every 72 hours

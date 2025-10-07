@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       console.log("This is NOT a request from Google Cloud!");
       throw createError({
         statusCode: 403,
-        statusMessage: "Sorry, but you cannot call this task directly!"
+        statusMessage: "Sorry, but you cannot call this URL directly!"
       });
     }
   }
