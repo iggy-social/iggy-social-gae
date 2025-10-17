@@ -80,6 +80,8 @@ export default {
 
   methods: {
     async changeUsername() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
+      
       this.loading = true
       this.fullDomainName = this.domainName + this.$config.public.tldName
 
@@ -113,6 +115,8 @@ export default {
             functionName: 'editDefaultDomain',
             args: [this.domainName.toLowerCase()] // domain name
           })
+
+          this.toast.dismiss(toastWaitSign)
 
           toastWait = this.toast(
             {
@@ -164,8 +168,9 @@ export default {
           this.loading = false
           return
         } finally {
-        this.toast.dismiss(toastWait)
-        this.loading = false
+          this.toast.dismiss(toastWaitSign)
+          this.toast.dismiss(toastWait)
+          this.loading = false
         }
       }
     },

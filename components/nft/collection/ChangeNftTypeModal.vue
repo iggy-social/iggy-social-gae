@@ -163,6 +163,7 @@ export default {
 
   methods: {
     async updateMetadata() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
       this.waitingMetadata = true
 
       if (this.typeChoice === 0) {
@@ -204,6 +205,8 @@ export default {
 
         // Write the transaction
         const hash = await writeData(contractConfig)
+
+        this.toast.dismiss(toastWaitSign)
 
         toastWait = this.toast(
           {
@@ -276,6 +279,7 @@ export default {
 
         this.waitingMetadata = false
       } finally {
+        this.toast.dismiss(toastWaitSign)
         this.toast.dismiss(toastWait)
         this.waitingMetadata = false
       }

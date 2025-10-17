@@ -158,6 +158,7 @@ export default {
     },
 
     async setAudio() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
       this.waitingAudio = true;
       this.audioUrl = this.sanitizeUrl(this.audioUrl);
       
@@ -187,6 +188,8 @@ export default {
           functionName: 'setAudioUrl',
           args: [this.cAddress, this.audioUrl]
         });
+
+        this.toast.dismiss(toastWaitSign)
 
         const toastWait = this.toast(
           {
@@ -245,10 +248,13 @@ export default {
         }
 
         this.waitingAudio = false;
+      } finally {
+        this.toast.dismiss(toastWaitSign)
       }
     },
 
     async setVideo() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
       this.waitingVideo = true;
       this.videoUrl = this.sanitizeUrl(this.videoUrl);
 
@@ -278,6 +284,8 @@ export default {
           functionName: 'setAnimationUrl',
           args: [this.cAddress, this.videoUrl]
         });
+
+        this.toast.dismiss(toastWaitSign)
 
         const toastWait = this.toast(
           {
@@ -336,10 +344,13 @@ export default {
         }
 
         this.waitingVideo = false;
+      } finally {
+        this.toast.dismiss(toastWaitSign)
       }
     },
 
     async setYoutube() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
       this.waitingYoutube = true;
 
       if (!this.youtubeUrl) {
@@ -372,6 +383,8 @@ export default {
           functionName: 'setYoutubeUrl',
           args: [this.cAddress, this.youtubeUrl]
         });
+
+        this.toast.dismiss(toastWaitSign)
 
         const toastWait = this.toast(
           {
@@ -430,6 +443,8 @@ export default {
         }
 
         this.waitingYoutube = false;
+      } finally {
+        this.toast.dismiss(toastWaitSign)
       }
     },
   },

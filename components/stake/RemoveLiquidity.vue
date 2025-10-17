@@ -124,6 +124,8 @@ export default {
 
   methods: {
     async approveToken() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
+      
       this.waitingApproval = true
 
       let toastWait;
@@ -148,6 +150,8 @@ export default {
         }
 
         const hash = await writeData(lpTokenContract)
+
+        this.toast.dismiss(toastWaitSign)
 
         toastWait = this.toast(
           {
@@ -202,12 +206,15 @@ export default {
           this.toast("Transaction has failed.", {type: "error"});
         }
       } finally {
+        this.toast.dismiss(toastWaitSign)
         this.toast.dismiss(toastWait)
         this.waitingApproval = false
       }
     },
 
     async removeLiquidity() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
+      
       this.waitingDeposit = true
 
       let toastWait;
@@ -284,6 +291,8 @@ export default {
 
         const hash = await writeData(routerContract)
 
+        this.toast.dismiss(toastWaitSign)
+
         toastWait = this.toast(
           {
             component: WaitingToast,
@@ -343,6 +352,7 @@ export default {
           this.toast("Transaction has failed.", {type: "error"});
         }
       } finally {
+        this.toast.dismiss(toastWaitSign)
         this.toast.dismiss(toastWait)
         this.waitingDeposit = false
       }

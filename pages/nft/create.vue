@@ -323,6 +323,7 @@ export default {
     },
 
     async createCollection() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
       this.waitingCreate = true
 
       let toastWait;
@@ -369,6 +370,8 @@ export default {
           }
 
           const hash = await writeData(launchpadContract)
+
+          this.toast.dismiss(toastWaitSign)
 
           toastWait = this.toast(
             {
@@ -449,6 +452,7 @@ export default {
           this.waitingCreate = false
         } finally {
           this.toast.dismiss(toastWait)
+          this.toast.dismiss(toastWaitSign)
           this.waitingCreate = false
         }
       }

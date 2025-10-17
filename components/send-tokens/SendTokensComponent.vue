@@ -253,6 +253,8 @@ export default {
     },
 
     async send() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
+
       // if recipient includes a dot, check if it ends with tldName. If not, throw error via toast
       if (this.inputReceiver.includes('.')) {
         if (!this.inputReceiver.endsWith(this.$config.public.tldName)) {
@@ -293,6 +295,8 @@ export default {
 
       try {
         const hash = await writeData(tokenContractConfig)
+
+        this.toast.dismiss(toastWaitSign)
 
         toastWait = this.toast(
           {
@@ -355,12 +359,15 @@ export default {
 
         this.waiting = false
       } finally {
+        this.toast.dismiss(toastWaitSign)
         this.toast.dismiss(toastWait)
         this.waiting = false
       }
     },
 
     async sendNativeTokens() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
+      
       let toastWait;
 
       try {
@@ -368,6 +375,8 @@ export default {
           this.recipientAddress,
           this.inputTokenAmount
         )
+
+        this.toast.dismiss(toastWaitSign)
 
         toastWait = this.toast(
           {
@@ -430,6 +439,7 @@ export default {
 
         this.waiting = false
       } finally {
+        this.toast.dismiss(toastWaitSign)
         this.toast.dismiss(toastWait)
         this.waiting = false
       }

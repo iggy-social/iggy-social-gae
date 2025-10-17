@@ -73,6 +73,7 @@ export default {
 
   methods: {
     async update() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
       this.waiting = true
 
       let toastWait;
@@ -99,6 +100,8 @@ export default {
             this.editDescription.replace(/"/g, "'") // replace double quotes with single quotes
           ]
         })
+
+        this.toast.dismiss(toastWaitSign)
 
         toastWait = this.toast(
           {
@@ -167,6 +170,7 @@ export default {
 
         this.waiting = false
       } finally {
+        this.toast.dismiss(toastWaitSign)
         this.toast.dismiss(toastWait)
         this.waiting = false
       }

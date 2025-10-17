@@ -95,6 +95,8 @@ export default {
 
   methods: {
     async updateImage() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
+      
       if (!this.isConnected) {
         this.toast('Please connect your wallet first.', { type: 'error' })
         return
@@ -126,6 +128,8 @@ export default {
 
         // Write the transaction
         const hash = await writeData(contractConfig)
+
+        this.toast.dismiss(toastWaitSign)
 
         toastWait = this.toast(
           {
@@ -194,6 +198,7 @@ export default {
 
         this.waiting = false
       } finally {
+        this.toast.dismiss(toastWaitSign)
         this.toast.dismiss(toastWait)
         this.waiting = false
       }
