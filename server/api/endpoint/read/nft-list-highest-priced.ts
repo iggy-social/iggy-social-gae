@@ -36,19 +36,30 @@ export default defineEventHandler(async (event) => {
 
         const results = await datastore.runQuery(query)
 
-        console.log("Highest priced NFTs API results:", results)
+        //console.log("Highest priced NFTs API results:", results)
 
         let collections = results[0]
 
-        console.log("Highest priced NFTs API collections:", collections)
+        //console.log("Highest priced NFTs API collections:", collections)
 
-        // Remove entries with supply less than 20
-        let i = 0
-        while (i < collections.length) {
-          if (collections[i].supply < 20) {
-            collections.splice(i, 1)
-          } else {
-            i++
+        // if collections length is greater than limitNum
+        if (collections.length > limitNum) {
+
+          // store the original collections array in a variable
+          let originalCollections = collections
+
+          // Remove entries with supply less than 20
+          let i = 0
+          while (i < collections.length) {
+            if (collections[i].supply < 20) {
+              collections.splice(i, 1)
+            } else {
+              i++
+            }
+          }
+
+          if (collections.length == 0) {
+            collections = originalCollections
           }
         }
 

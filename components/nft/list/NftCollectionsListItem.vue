@@ -16,7 +16,7 @@
       <div class="card-body rounded-bottom-3">
         <p class="card-text mb-0"><strong>{{ nft.title }}</strong></p>
         <p v-if="authorName" class="mb-2"><small><em>by {{ authorName }}</em></small></p>
-        <small class="card-text">{{ getLessDecimals(nft.mintPrice) }} {{ $config.tokenSymbol }}</small>
+        <small class="card-text">{{ getLessDecimals(nft.mintPrice) }} {{ $config.public.tokenSymbol }}</small>
       </div>
     </div>
   </NuxtLink>
