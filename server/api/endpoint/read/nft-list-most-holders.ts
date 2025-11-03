@@ -25,37 +25,16 @@ export default defineEventHandler(async (event) => {
     // Only run datastore queries in production
     if (!process.env.MYLOCALHOST) {
       try {
-        // Fetch NFT collections ordered by mintPrice descending
-        // Fetch limit*3 to account for filtering out collections with supply < 20
+        // Fetch NFT collections ordered by supply descending (most holders)
         const query = datastore
           .createQuery(kindNftCollection)
-          .order('mintPrice', {
+          .order('supply', {
             descending: true
           })
-          .limit(Number(limitNum) * 3)
+          .limit(Number(limitNum))
 
         const results = await datastore.runQuery(query)
-
-        console.log("Highest priced NFTs API results:", results)
-
-        let collections = results[0]
-
-        console.log("Highest priced NFTs API collections:", collections)
-
-        // Remove entries with supply less than 20
-        let i = 0
-        while (i < collections.length) {
-          if (collections[i].supply < 20) {
-            collections.splice(i, 1)
-          } else {
-            i++
-          }
-        }
-
-        // Return only the top N entries (where N is the limit)
-        if (collections.length > limitNum) {
-          collections = collections.slice(0, limitNum)
-        }
+        const collections = results[0]
 
         return {
           success: true,
@@ -64,10 +43,10 @@ export default defineEventHandler(async (event) => {
           collections: collections
         }
       } catch (datastoreError) {
-        console.error('Error fetching highest priced NFTs from datastore:', datastoreError)
+        console.error('Error fetching most holders NFTs from datastore:', datastoreError)
         throw createError({
           statusCode: 500,
-          statusMessage: 'Failed to fetch highest priced NFTs'
+          statusMessage: 'Failed to fetch most holders NFTs'
         })
       }
     }
@@ -81,7 +60,7 @@ export default defineEventHandler(async (event) => {
     }
 
   } catch (error: any) {
-    console.error('Highest priced NFTs API error:', error)
+    console.error('Most holders NFTs API error:', error)
     
     if (error.statusCode) {
       throw error

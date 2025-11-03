@@ -1,15 +1,15 @@
 <template>
   <Head>
-    <Title>Top-Priced NFTs | {{ $config.public.projectMetadataTitle }}</Title>
-    <Meta property="og:title" :content="'Top-Priced NFTs | '+$config.public.projectMetadataTitle" />
+    <Title>Most Holders NFTs | {{ $config.public.projectMetadataTitle }}</Title>
+    <Meta property="og:title" :content="'Most Holders NFTs | '+$config.public.projectMetadataTitle" />
   
-    <Meta name="description" content="Check these NFTs with the highest mint price!" />
+    <Meta name="description" content="Check these NFTs with most holders!" />
   
     <Meta property="og:image" :content="$config.public.projectUrl+$config.public.previewImageNftLaunchpad" />
-    <Meta property="og:description" content="Check these NFTs with the highest mint price!" />
+    <Meta property="og:description" content="Check these NFTs with most holders!" />
   
     <Meta name="twitter:image" :content="$config.public.projectUrl+$config.public.previewImageNftLaunchpad" />
-    <Meta name="twitter:description" content="Check these NFTs with the highest mint price!" />
+    <Meta name="twitter:description" content="Check these NFTs with most holders!" />
   </Head>
   
   <div class="card border scroll-500">
@@ -32,7 +32,7 @@
         </div>
       </h3>
 
-      <NftListDropdown buttonText="Top-Priced NFTs" />
+      <NftListDropdown buttonText="Most Holders NFTs" />
 
       <div class="d-flex justify-content-center mb-3" v-if="waitingData && !nftsList">
         <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
@@ -54,7 +54,7 @@ import NftCollectionsList from '~/components/nft/list/NftCollectionsList.vue';
 import NftListDropdown from '~/components/nft/list/NftListDropdown.vue';
 
 export default {
-  name: 'NftsHighestPrice',
+  name: 'NftsMostHolders',
   props: ["hideBackButton"],
 
   data() {
@@ -75,16 +75,16 @@ export default {
     this.fetchNfts();
 
     // set this component name as the current component in localStorage
-    window.localStorage.setItem("currentNftPage", "/nft/highest-priced");
+    window.localStorage.setItem("currentNftPage", "/nft/most-holders");
   },
 
   methods: {
     async fetchNfts() {
       this.waitingData = true;
 
-      // Fetch NFTs with the highest price
+      // Fetch NFTs with the most holders
       try {
-        const response = await axios.get(`/api/endpoint/read/nft-list-highest-priced?limit=${this.limit}`);
+        const response = await axios.get(`/api/endpoint/read/nft-list-most-holders?limit=${this.limit}`);
         this.nftsList = response.data.collections;
       } catch (error) {
         console.error(error);
@@ -92,6 +92,8 @@ export default {
         this.waitingData = false;
       }
     },
+
+    
   }
 }
 </script>
