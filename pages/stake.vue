@@ -16,6 +16,21 @@
       name="twitter:description"
       :content="'Stake and earn ' + $config.public.tokenSymbol + ' on ' + $config.public.projectName + '!'"
     />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImageStake,
+        button: {
+          title: 'Stake and Earn',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/stake`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
 
   <div class="card border scroll-500">

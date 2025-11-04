@@ -10,6 +10,21 @@
   
     <Meta name="twitter:image" :content="$config.public.projectUrl+$config.public.previewImageNftLaunchpad" />
     <Meta name="twitter:description" content="Check these NFTs with the highest mint price!" />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImageNftLaunchpad,
+        button: {
+          title: 'Top-Priced NFTs',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/nft/highest-priced`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
   
   <div class="card border scroll-500">

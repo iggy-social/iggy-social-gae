@@ -16,6 +16,21 @@
       name="twitter:description"
       :content="'Check out these awesome NFT collections on ' + $config.public.projectName + '!'"
     />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImageNftLaunchpad,
+        button: {
+          title: 'NFT Launchpad',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/nft`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
 
   <div class="card border scroll-500">

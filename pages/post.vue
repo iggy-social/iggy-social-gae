@@ -8,6 +8,21 @@
 
       <Meta name="twitter:image" :content="$config.public.projectUrl + $config.public.previewImagePost" />
       <Meta name="twitter:description" :content="'Check out this chat post on ' + $config.public.projectName + '!'" />
+
+      <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImagePost,
+        button: {
+          title: 'See Chat Post',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/post/?id=${$route.query.id}&context=${$route.query.context}`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
     </Head>
   </div>
 

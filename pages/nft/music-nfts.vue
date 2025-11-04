@@ -5,11 +5,26 @@
   
     <Meta name="description" content="Music NFTs have come onchain. Check them out here!" />
   
-    <Meta property="og:image" :content="$config.public.projectUrl+$config.public.previewMusicNfts" />
+    <Meta property="og:image" :content="$config.public.projectUrl+$config.public.previewImageMusicNfts" />
     <Meta property="og:description" content="Music NFTs have come onchain. Check them out here!" />
   
-    <Meta name="twitter:image" :content="$config.public.projectUrl+$config.public.previewMusicNfts" />
+    <Meta name="twitter:image" :content="$config.public.projectUrl+$config.public.previewImageMusicNfts" />
     <Meta name="twitter:description" content="Music NFTs have come onchain. Check them out here!" />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImageMusicNfts,
+        button: {
+          title: 'Onchain Music NFTs',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/nft/music-nfts`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
   
   <div class="card border scroll-500">

@@ -5,11 +5,26 @@
   
     <Meta name="description" content="Video NFTs have come onchain. Check them out here!" />
   
-    <Meta property="og:image" :content="$config.public.projectUrl+$config.public.previewVideoNfts" />
+    <Meta property="og:image" :content="$config.public.projectUrl+$config.public.previewImageVideoNfts" />
     <Meta property="og:description" content="Video NFTs have come onchain. Check them out here!" />
   
-    <Meta name="twitter:image" :content="$config.public.projectUrl+$config.public.previewVideoNfts" />
+    <Meta name="twitter:image" :content="$config.public.projectUrl+$config.public.previewImageVideoNfts" />
     <Meta name="twitter:description" content="Video NFTs have come onchain. Check them out here!" />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImageVideoNfts,
+        button: {
+          title: 'Check Video NFTs',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/nft/video-nfts`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
   
   <div class="card border scroll-500">

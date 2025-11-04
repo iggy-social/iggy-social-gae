@@ -19,6 +19,21 @@
       name="twitter:description"
       :content="'Claim your ' + $config.public.chatTokenSymbol + ' token airdrop on ' + $config.public.projectName + '!'"
     />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImageAirdrop,
+        button: {
+          title: `${$config.public.projectName} Airdrop`,
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/airdrop`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
 
   <div class="card border scroll-500">

@@ -10,6 +10,21 @@
   
     <Meta name="twitter:image" :content="$config.public.projectUrl+$config.public.previewImageNftLaunchpad" />
     <Meta name="twitter:description" content="Check these NFTs that were traded the most!" />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImageNftLaunchpad,
+        button: {
+          title: 'Most Traded NFTs',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/nft/most-traded`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
   
   <div class="card border scroll-500">

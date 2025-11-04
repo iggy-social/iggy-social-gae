@@ -2,6 +2,21 @@
   <Head>
     <Title>Send tokens | {{ $config.public.projectMetadataTitle }}</Title>
     <Meta property="og:title" :content="'Send tokens | ' + $config.public.projectMetadataTitle" />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImage,
+        button: {
+          title: 'Send tokens',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/send-tokens`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
 
   <div class="scroll-500">

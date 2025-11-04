@@ -2,6 +2,21 @@
   <Head>
     <Title>Swap | {{ $config.public.projectMetadataTitle }}</Title>
     <Meta property="og:title" :content="'Token Swap | ' + $config.public.projectMetadataTitle" />
+
+    <Meta name="fc:miniapp" :content="JSON.stringify({
+        version: '1',
+        imageUrl: $config.public.previewImage,
+        button: {
+          title: 'Swap Tokens',
+          action: {
+            type: 'launch_miniapp',
+            name: $config.public.projectName,
+            url: `${$config.public.projectUrl}/swap/univ2`,
+            splashImageUrl: $config.public.farcasterSplashImageUrl,
+            splashBackgroundColor: $config.public.farcasterSplashBackgroundColor
+          }
+        }
+      })" />
   </Head>
 
   <div class="scroll-500">

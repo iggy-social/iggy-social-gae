@@ -549,7 +549,7 @@ export default {
         action: {
           type: "launch_miniapp",
           name: runtimeConfig.public.projectName,
-          url: runtimeConfig.public.projectUrl,
+          url: `${runtimeConfig.public.projectUrl}/nft/create`,
           splashImageUrl: runtimeConfig.public.farcasterSplashImageUrl,
           splashBackgroundColor: runtimeConfig.public.farcasterSplashBackgroundColor
         }
