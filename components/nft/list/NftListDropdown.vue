@@ -10,9 +10,7 @@
       -->
       <li><NuxtLink class="dropdown-item" to="/nft"><i class="bi bi-stars me-2"></i>New NFTs</NuxtLink></li>
       <li><NuxtLink class="dropdown-item" to="/nft/featured"><i class="bi bi-patch-check me-2"></i>Featured NFTs</NuxtLink></li>
-      <!--
       <li><NuxtLink class="dropdown-item" to="/nft/most-traded"><i class="bi bi-arrow-left-right me-2"></i>Most Traded NFTs</NuxtLink></li>
-      -->
       <li><NuxtLink class="dropdown-item" to="/nft/highest-priced"><i class="bi bi-currency-bitcoin me-2"></i>Top-Priced NFTs</NuxtLink></li>
       <li><NuxtLink class="dropdown-item" to="/nft/most-holders"><i class="bi bi-gem me-2"></i>Most Holders NFTs</NuxtLink></li>
     </ul>
