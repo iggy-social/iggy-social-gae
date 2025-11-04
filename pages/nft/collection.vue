@@ -81,6 +81,16 @@
                 </span>
               </li>
 
+              <li v-if="isCurrentAddressOwner && mediaMetadataContract">
+                <span 
+                  class="dropdown-item cursor-pointer" 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#changeMediaModal"
+                >
+                  Set NFT media (audio & video)
+                </span>
+              </li>
+
               <li v-if="isCurrentAddressOwner && cType == 0">
                 <span
                   class="dropdown-item cursor-pointer"
