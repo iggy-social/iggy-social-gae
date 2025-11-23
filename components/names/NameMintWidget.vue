@@ -36,9 +36,10 @@
             aria-hidden="true"
           ></span>
           <span v-if="loadingData">Loading data...</span>
-          <span v-if="!loadingMint && !loadingData && balanceTooLow">Balance too low</span>
-          <span v-if="!loadingMint && !loadingData && !balanceTooLow">Mint username</span>
-          <span v-else>Mint username</span>
+          <span v-if="paused">Minting is paused</span>
+          <span v-if="!loadingMint && !loadingData && balanceTooLow && !paused">Balance too low</span>
+          <span v-if="!loadingMint && !loadingData && !balanceTooLow && !paused">Mint username</span>
+          <span v-if="loadingMint && !balanceTooLow && !paused">Mint username</span>
         </button>
 
         <ConnectWalletButton v-if="!isConnected" class="btn-outline-primary mt-2 mb-2" btnText="Connect Wallet" />

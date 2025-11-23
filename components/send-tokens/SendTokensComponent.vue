@@ -253,8 +253,6 @@ export default {
     },
 
     async send() {
-      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
-
       // if recipient includes a dot, check if it ends with tldName. If not, throw error via toast
       if (this.inputReceiver.includes('.')) {
         if (!this.inputReceiver.endsWith(this.$config.public.tldName)) {
@@ -281,6 +279,8 @@ export default {
     },
 
     async sendErc20Tokens() {
+      const toastWaitSign = this.toast({component: WaitingToast, props: {text: 'Please confirm the transaction.'}}, {type: 'info'})
+
       const tokenContractConfig = {
         address: this.inputToken.address,
         abi: Erc20Abi,
