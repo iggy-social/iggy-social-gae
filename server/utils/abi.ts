@@ -277,5 +277,29 @@ export const nftDirectoryAbi = [
     stateMutability: 'view',
     inputs: [],
     outputs: [{ name: '', type: 'address[]' }]
+  },
+  {
+    name: 'getLastNftContracts',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: 'amount', type: 'uint256' }],
+    outputs: [{ name: '', type: 'address[]' }]
+  },
+  {
+    name: 'getNftContracts',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [
+      { name: 'fromIndex', type: 'uint256' },
+      { name: 'toIndex', type: 'uint256' }
+    ],
+    outputs: [{ name: '', type: 'address[]' }]
+  },
+  {
+    name: 'getNftContractsArrayLength',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256' }]
   }
 ] as const;

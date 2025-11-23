@@ -50,16 +50,26 @@
             :key="cImage"
           />
 
-          <!-- Actions dropdown -->
-          <div class="dropdown mt-3" v-if="nativeNft">
+          <!-- Share and Actions buttons -->
+          <div class="d-flex gap-2 mt-3 justify-content-center" v-if="nativeNft">
             <button
-              class="btn btn-outline-primary btn-sm dropdown-toggle"
+              v-if="isFarcasterEnvironment"
+              class="btn btn-outline-primary btn-sm"
               type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+              @click="handleShareOnFarcaster"
             >
-              Actions
+              Share on FC
             </button>
+            
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-primary btn-sm dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Actions
+              </button>
             <ul class="dropdown-menu">
               <li v-if="isCurrentAddressOwner">
                 <span
@@ -151,6 +161,7 @@
                 <span class="dropdown-item cursor-pointer" @click="getCollectionDetails(true)">Refresh metadata</span>
               </li>
             </ul>
+            </div>
           </div>
         </div>
 
@@ -321,6 +332,7 @@
 </template>
 
 <script>
+import { sdk } from '@farcaster/miniapp-sdk'
 import axios from 'axios'
 import { isAddress, formatEther } from 'viem'
 import { useToast } from 'vue-toastification/dist/index.mjs'
@@ -341,6 +353,7 @@ import RemoveImageFromCollectionModal from '@/components/nft/collection/RemoveIm
 import SendNftModal from '@/components/nft/collection/SendNftModal.vue';
 
 import { useAccountData } from '@/composables/useAccountData'
+import { useSiteSettings } from '@/composables/useSiteSettings'
 
 import { shortenAddress } from '@/utils/addressUtils'
 import { fetchCollection, fetchUsername, storeCollection, storeUsername } from '@/utils/browserStorageUtils'
@@ -449,6 +462,10 @@ export default {
       }
 
       return false
+    },
+
+    isFarcasterEnvironment() {
+      return this.environment === 'farcaster'
     },
 
     isSupportedChain() {
@@ -822,6 +839,13 @@ export default {
 
       if (refresh) {
         collection = null
+
+        // add collection to the API in case it's not in the database yet 
+        try {
+          await axios.get(`/api/endpoint/write/add-collection-by-address?nft_address=${this.cAddress}`);
+        } catch (e) {
+          console.error(e);
+        }
 
         // update user's NFT balance in the API
         if (this.address) {
@@ -1346,6 +1370,18 @@ export default {
       this.waitingData = false;
     },
 
+    async handleShareOnFarcaster() {
+      try {
+        await sdk.actions.composeCast({
+          text: `Check out this liquid NFT: ${this.cName}`,
+          embeds: [window.location.href],
+        })
+      } catch (err) {
+        console.error('Error sharing:', err)
+        this.toast.error('Error sharing the mini app link. Please reach out to the developer.')
+      }
+    },
+
     async removeFromFeatured() {
       if (this.nftDirectoryAdminOrOwner) {
         this.waitingRemoveFromFeatured = true
@@ -1636,6 +1672,8 @@ export default {
 
     const { nftDirectoryAdminOrOwner, nftDirectoryAddress } = useAccountData()
 
+    const { environment } = useSiteSettings()
+
     const route = useRoute()
     const cAddress = computed(() => route.query?.id)
 
@@ -1654,6 +1692,7 @@ export default {
       cAddress,
       chainId, 
       collectionData,
+      environment,
       isConnected, 
       nftDirectoryAdminOrOwner,
       nftDirectoryAddress,

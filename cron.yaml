@@ -5,3 +5,6 @@ cron:
 - description: "Store past volume data in datastore"
   url: /api/cron/store-historic-stats
   schedule: every day 10:00
+- description: "Add missing NFTs"
+  url: /api/cron/add-missing-nfts
+  schedule: every 72 hours
