@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   ssr: true, // server side rendering on Google App Engine
   nitro: {
     preset: 'node-server', // works for Google App Engine
+    // Bundle ox package inline instead of externalizing it
+    // This ensures it's available in the built output
+    externals: {
+      inline: ['ox'],
+    },
   },
   modules: ['@wagmi/vue/nuxt'],
   css: ['vue-toastification/dist/index.css'],

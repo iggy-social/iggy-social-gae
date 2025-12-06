@@ -9,7 +9,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt build && nuxt prepare",
+    "postinstall": "nuxt prepare",
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "@farcaster/miniapp-wagmi-connector": "latest",
     "@google-cloud/datastore": "^9.2.1",
     "@google-cloud/tasks": "^6.2.0",
+    "@metamask/sdk": "^0.34.0",
     "@openzeppelin/merkle-tree": "^1.0.8",
     "@popperjs/core": "^2.11.8",
     "@tanstack/vue-query": ">=5.83.0",
@@ -29,9 +30,9 @@
     "emoji-mart-vue-fast": "^15.0.4",
     "imagekit": "^6.0.0",
     "imagekit-javascript": "^4.0.1",
-    "nuxt": "^3.19.1",
+    "nuxt": "^3.20.x",
+    "ox": "^0.4.4",
     "viem": "latest",
-    "vue": "^3.5.17",
     "vue-toastification": "next"
   },
   "engines": {
