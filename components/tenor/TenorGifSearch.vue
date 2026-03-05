@@ -85,7 +85,7 @@ export default {
       this.gifArray = []
 
       const searchUrl =
-        'https://tenor.googleapis.com/v2/search?q=' +
+        'https://api.klipy.com/v2/search?q=' +
         this.searchTerm +
         '&key=' +
         this.tenorKey +
